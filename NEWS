@@ -10,6 +10,8 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
+New in release 2.3.2 (2012-10-16):
+
 New in release 2.3.1 (2012-08-29):
 
 * Security fixes
