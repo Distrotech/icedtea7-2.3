@@ -1,5 +1,13 @@
 2012-08-31  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR1149: Zero-specific patch files not being packaged
+	* Makefile.am:
+	(EXTRA_DIST): Add HotSpot-specific non-bootstrap
+	patches (currently Zero only).
+	* NEWS: Updated.
+
+2012-08-31  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* NEWS: Add 2.3.2 changes from the forest.
 	Add Sun bug ID to previous security fix in
 	2.3.1.

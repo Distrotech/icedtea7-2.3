@@ -22,6 +22,8 @@ New in release 2.3.2 (2012-10-16):
   - S7182135: Impossible to use some editors directly
   - S7183701: [TEST] closed/java/beans/security/TestClassFinder.java - compilation failed
   - S7185678: java/awt/Menu/NullMenuLabelTest/NullMenuLabelTest.java failed with NPE
+* Bug fixes
+  - PR1149: Zero-specific patch files not being packaged
 
 New in release 2.3.1 (2012-08-29):
 
