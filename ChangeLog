@@ -1,5 +1,11 @@
 2012-08-31  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* NEWS: Add 2.3.2 changes from the forest.
+	Add Sun bug ID to previous security fix in
+	2.3.1.
+
+2012-08-31  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	(JDK_CHANGESET): Update to IcedTea7 2.3 forest head
 	and revised icedtea-2.3.2 tag.
 	(JDK_SHA256SUM): Likewise.

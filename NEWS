@@ -12,10 +12,21 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.2 (2012-10-16):
 
+* Security fixes
+  - S7162476, CVE-2012-1682: XMLDecoder security issue via ClassFinder
+  - S7194567, CVE-2012-3136: Improve long term persistence of java.beans objects
+  - S7163201, CVE-2012-0547: Simplify toolkit internals references
+* OpenJDK
+  - Fix Zero FTBFS issues with 2.3
+  - S7180036: Build failure in Mac platform caused by fix # 7163201
+  - S7182135: Impossible to use some editors directly
+  - S7183701: [TEST] closed/java/beans/security/TestClassFinder.java - compilation failed
+  - S7185678: java/awt/Menu/NullMenuLabelTest/NullMenuLabelTest.java failed with NPE
+
 New in release 2.3.1 (2012-08-29):
 
 * Security fixes
-  - RH852051, CVE-2012-4681: Reintroduce PackageAccessible checks removed in 6788531.
+  - RH852051, CVE-2012-4681, S7162473: Reintroduce PackageAccessible checks removed in 6788531.
 * Bug fixes
   - PR902: PulseAudioClip getMicrosecondsLength() returns length in milliseconds, not microseconds
   - PR986: IcedTea7 fails to build with IcedTea6 CACAO due to low max heap size
