@@ -1,5 +1,10 @@
 2011-10-17  Andrew John Hughes  <gnu.andrew@redhat.com>
 
+	* configure.ac: Bump to 2.3.3 proper.
+	* NEWS: Add release date.
+
+2011-10-17  Andrew John Hughes  <gnu.andrew@redhat.com>
+
 	* NEWS: Updated.
 
 2011-10-17  Andrew John Hughes  <gnu.andrew@redhat.com>
