@@ -6216,3 +6216,20 @@ diff -Nru openjdk-boot.orig/jdk/test/java/util/Random/DistinctSeeds.java openjdk
          List<Thread> threads = new ArrayList<Thread>();
          for (int i = 0; i < threadCount; i++) {
              RandomCollector r = new RandomCollector();
+diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/beans/decoder/DocumentHandler.java openjdk-boot/jdk/src/share/classes/com/sun/beans/decoder/DocumentHandler.java
+--- openjdk-boot.orig/jdk/src/share/classes/com/sun/beans/decoder/DocumentHandler.java	2012-10-17 02:42:13.610815469 +0100
++++ openjdk-boot/jdk/src/share/classes/com/sun/beans/decoder/DocumentHandler.java	2012-10-17 02:43:02.995461481 +0100
+@@ -62,9 +62,10 @@
+  */
+ public final class DocumentHandler extends DefaultHandler {
+     private final AccessControlContext acc = AccessController.getContext();
+-    private final Map<String, Class<? extends ElementHandler>> handlers = new HashMap<>();
+-    private final Map<String, Object> environment = new HashMap<>();
+-    private final List<Object> objects = new ArrayList<>();
++    private final Map<String, Class<? extends ElementHandler>> handlers =
++					      new HashMap<String, Class<? extends ElementHandler>>();
++    private final Map<String, Object> environment = new HashMap<String, Object>();
++    private final List<Object> objects = new ArrayList<Object>();
+ 
+     private Reference<ClassLoader> loader;
+     private ExceptionListener listener;

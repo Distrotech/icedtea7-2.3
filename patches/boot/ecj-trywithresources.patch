@@ -1056,3 +1056,23 @@ diff -Nru openjdk-boot.orig/jdk/src/solaris/classes/sun/nio/fs/UnixFileStore.jav
          } catch (IOException x) {
          }
          return result;
+diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java
+--- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java	2012-10-17 03:17:03.331299684 +0100
++++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java	2012-10-17 03:18:04.192329905 +0100
+@@ -1401,10 +1401,14 @@
+                             java.net.URLConnection uconn = tClass.getResource(tResource).openConnection();
+                             int len = uconn.getContentLength();
+                             byte[] bytes = new byte[len];
+-                            try (java.io.InputStream str = uconn.getInputStream()) {
++			    java.io.InputStream str = null;
++                            try {
++				str = uconn.getInputStream(); 
+                                 int nr = str.read(bytes);
+                                 if (nr != len)  throw new java.io.IOException(tResource);
+-                            }
++                            } finally {
++				str.close();
++			    }
+                             values[0] = bytes;
+                         } catch (java.io.IOException ex) {
+                             throw new InternalError(ex.toString());

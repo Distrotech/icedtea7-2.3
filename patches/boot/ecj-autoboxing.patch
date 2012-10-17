@@ -243,6 +243,15 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleI
                  return target.invokeExact(a0, a1, a2, a3, a4, a5, a6, a7);
              return fallback.invokeExact(a0, a1, a2, a3, a4, a5, a6, a7);
          }
+@@ -1374,7 +1374,7 @@
+                 MH_checkCallerClass = IMPL_LOOKUP
+                     .findStatic(THIS_CLASS, "checkCallerClass",
+                                 MethodType.methodType(boolean.class, Class.class, Class.class));
+-                assert((boolean) MH_checkCallerClass.invokeExact(THIS_CLASS, THIS_CLASS));
++                assert((Boolean) MH_checkCallerClass.invokeExact(THIS_CLASS, THIS_CLASS));
+             } catch (Throwable ex) {
+                 throw new InternalError(ex.toString());
+             }
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/ToGeneric.java openjdk-boot/jdk/src/share/classes/java/lang/invoke/ToGeneric.java
 --- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/ToGeneric.java	2011-06-11 00:38:08.000000000 +0100
 +++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/ToGeneric.java	2011-07-12 15:12:13.214932157 +0100
@@ -285,3 +294,6 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/sun/invoke/util/ValueConversio
          else
              return (int) unboxLong(x, false);
      }
+diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java
+--- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java	2012-10-17 03:17:03.331299684 +0100
++++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleImpl.java	2012-10-17 03:19:49.546110492 +0100
