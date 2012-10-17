@@ -38,7 +38,6 @@ New in release 2.3.3 (2012-10-17):
   - S7158800: Improve storage of symbol tables
   - S7158801: Improve VM CompileOnly option
   - S7158804: Improve config file parsing
-  - S7176337: Additional changes needed for 7158801 fix
   - S7198606, CVE-2012-4416: Improve VM optimization
 * Bug fixes
   - Remove merge artefact.

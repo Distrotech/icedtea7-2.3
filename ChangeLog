@@ -1,5 +1,12 @@
 2011-10-17  Andrew John Hughes  <gnu.andrew@redhat.com>
 
+	* NEWS: Drop S7176337 which is only
+	part of the 6 updates.
+	* hotspot.map: Update zero so the version
+	of 2.1 with S7158800 included is brought in.
+
+2011-10-17  Andrew John Hughes  <gnu.andrew@redhat.com>
+
 	* configure.ac: Bump to 2.3.3 proper.
 	* NEWS: Add release date.
 
