@@ -34,7 +34,7 @@ New in release 2.3.3 (2012-10-17):
   - S7195194, CVE-2012-5084: Better data validation for Swing
   - S7195549, CVE-2012-5087: Better bean object persistence
   - S7195917, CVE-2012-5086: XMLDecoder parsing at close-time should be improved
-  - S7195919, CVE-2012-5979: (sl) ServiceLoader can throw CCE without needing to create instance
+  - S7195919, CVE-2012-5079: (sl) ServiceLoader can throw CCE without needing to create instance
   - S7196190, CVE-2012-5088: Improve method of handling MethodHandles
   - S7198296, CVE-2012-5089: Refactor classloader usage
   - S7158800: Improve storage of symbol tables
