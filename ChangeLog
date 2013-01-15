@@ -1,5 +1,10 @@
 2013-01-15  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* patches/boot/ecj-stringswitch.patch:
+	Updated to work post-security-patches.
+
+2013-01-15  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* configure.ac: Bump to 2.3.4 proper.
 
 2013-01-15  Andrew John Hughes  <gnu.andrew@member.fsf.org>
