@@ -10,7 +10,14 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
-New in release 2.3.4 (20XX-XX-XX):
+New in release 2.3.4 (2013-01-15):
+
+* Security fixes
+  - S8004933, CVE-2012-3174: Improve MethodHandle interaction with libraries
+  - S8006017, CVE-2013-0422: Improve lookup resolutions
+  - S8006125: Update MethodHandles library interactions
+* Bug fixes
+  - S7197906: BlockOffsetArray::power_to_cards_back() needs to handle > 32 bit shifts
 
 New in release 2.3.3 (2012-10-17):
 
