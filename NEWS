@@ -10,6 +10,11 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
+New in release 2.3.5 (2013-XX-XX):
+
+* Bug fixes
+  - Fix build using Zero's HotSpot so all patches apply again.
+
 New in release 2.3.4 (2013-01-15):
 
 * Security fixes

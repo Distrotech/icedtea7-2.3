@@ -1,5 +1,11 @@
 2013-01-16  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: Add 2.3.5 section and document
+	fix of Zero build.
+	* configure.ac: Bump to 2.3.5pre.
+
+2013-01-16  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* patches/hotspot/zero/6924259-string_offset.patch:
 	Fix patch to apply against HotSpot from 2.1.3.
 
