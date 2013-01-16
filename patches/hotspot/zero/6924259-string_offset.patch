@@ -1,15 +1,6 @@
-# HG changeset patch
-# User kvn
-# Date 1337013360 25200
-# Node ID 3facbb14e873f14af743e05139e6e48b5890ffcc
-# Parent  ea3152ff2a498749bf5d889b247902f5d02915be
-6924259: Remove String.count/String.offset
-Summary: Allow a version of String class that doesn't have count and offset fields.
-Reviewed-by: never, coleenp
-
-diff --git a/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp b/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp
---- openjdk/hotspot/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp
-+++ openjdk/hotspot/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp
+diff -Nru openjdk.orig/hotspot/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp openjdk/hotspot/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp
+--- openjdk.orig/hotspot/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp	2013-01-16 00:42:59.059088003 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
@@ -99,9 +90,9 @@ diff --git a/src/cpu/sparc/vm/c1_LIRAssembler_sparc.cpp b/src/cpu/sparc/vm/c1_LI
  
      __ lduh(base0, limit, chr0);
      __ bind(Lloop);
-diff --git a/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp b/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp
---- openjdk/hotspot/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp
-+++ openjdk/hotspot/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp
+diff -Nru openjdk.orig/hotspot/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp openjdk/hotspot/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp
+--- openjdk.orig/hotspot/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp	2013-01-16 00:41:43.257866830 +0000
++++ openjdk/hotspot/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp	2013-01-16 00:42:59.059088003 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
@@ -109,7 +100,7 @@ diff --git a/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp b/src/cpu/x86/vm/c1_LIRAssem
   * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
   *
   * This code is free software; you can redistribute it and/or modify it
-@@ -505,19 +505,28 @@
+@@ -506,19 +506,28 @@
  
    // Get addresses of first characters from both Strings
    __ load_heap_oop(rsi, Address(rax, java_lang_String::value_offset_in_bytes()));
@@ -145,9 +136,9 @@ diff --git a/src/cpu/x86/vm/c1_LIRAssembler_x86.cpp b/src/cpu/x86/vm/c1_LIRAssem
    __ mov   (rcx, rbx);
    __ subptr(rbx, rax); // subtract lengths
    __ push  (rbx);      // result
-diff --git a/src/share/vm/classfile/javaClasses.cpp b/src/share/vm/classfile/javaClasses.cpp
---- openjdk/hotspot/src/share/vm/classfile/javaClasses.cpp
-+++ openjdk/hotspot/src/share/vm/classfile/javaClasses.cpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/classfile/javaClasses.cpp openjdk/hotspot/src/share/vm/classfile/javaClasses.cpp
+--- openjdk.orig/hotspot/src/share/vm/classfile/javaClasses.cpp	2013-01-16 00:41:43.273867087 +0000
++++ openjdk/hotspot/src/share/vm/classfile/javaClasses.cpp	2013-01-16 00:42:59.071088195 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
@@ -155,7 +146,7 @@ diff --git a/src/share/vm/classfile/javaClasses.cpp b/src/share/vm/classfile/jav
   * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
   *
   * This code is free software; you can redistribute it and/or modify it
-@@ -143,7 +143,27 @@
+@@ -144,7 +144,27 @@
  }
  
  
@@ -224,9 +215,9 @@ diff --git a/src/share/vm/classfile/javaClasses.cpp b/src/share/vm/classfile/jav
  
    // java.lang.Class
  
-diff --git a/src/share/vm/classfile/javaClasses.hpp b/src/share/vm/classfile/javaClasses.hpp
---- openjdk/hotspot/src/share/vm/classfile/javaClasses.hpp
-+++ openjdk/hotspot/src/share/vm/classfile/javaClasses.hpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/classfile/javaClasses.hpp openjdk/hotspot/src/share/vm/classfile/javaClasses.hpp
+--- openjdk.orig/hotspot/src/share/vm/classfile/javaClasses.hpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/classfile/javaClasses.hpp	2013-01-16 00:42:59.071088195 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 1997, 2011, Oracle and/or its affiliates. All rights reserved.
@@ -349,10 +340,10 @@ diff --git a/src/share/vm/classfile/javaClasses.hpp b/src/share/vm/classfile/jav
    }
    static int utf8_length(oop java_string);
  
-diff --git a/src/share/vm/classfile/systemDictionary.cpp b/src/share/vm/classfile/systemDictionary.cpp
---- openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp
-+++ openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp
-@@ -1971,6 +1971,9 @@
+diff -Nru openjdk.orig/hotspot/src/share/vm/classfile/systemDictionary.cpp openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp
+--- openjdk.orig/hotspot/src/share/vm/classfile/systemDictionary.cpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp	2013-01-16 00:42:59.075088258 +0000
+@@ -1953,6 +1953,9 @@
    // first do Object, String, Class
    initialize_wk_klasses_through(WK_KLASS_ENUM_NAME(Class_klass), scan, CHECK);
  
@@ -362,10 +353,10 @@ diff --git a/src/share/vm/classfile/systemDictionary.cpp b/src/share/vm/classfil
    java_lang_Class::compute_offsets();
  
    // Fixup mirrors for classes loaded before java.lang.Class.
-diff --git a/src/share/vm/classfile/vmSymbols.hpp b/src/share/vm/classfile/vmSymbols.hpp
---- openjdk/hotspot/src/share/vm/classfile/vmSymbols.hpp
-+++ openjdk/hotspot/src/share/vm/classfile/vmSymbols.hpp
-@@ -339,6 +339,9 @@
+diff -Nru openjdk.orig/hotspot/src/share/vm/classfile/vmSymbols.hpp openjdk/hotspot/src/share/vm/classfile/vmSymbols.hpp
+--- openjdk.orig/hotspot/src/share/vm/classfile/vmSymbols.hpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/classfile/vmSymbols.hpp	2013-01-16 00:42:59.083088388 +0000
+@@ -337,6 +337,9 @@
    template(park_event_name,                           "nativeParkEventPointer")                   \
    template(cache_field_name,                          "cache")                                    \
    template(value_name,                                "value")                                    \
@@ -375,9 +366,9 @@ diff --git a/src/share/vm/classfile/vmSymbols.hpp b/src/share/vm/classfile/vmSym
    template(frontCacheEnabled_name,                    "frontCacheEnabled")                        \
    template(stringCacheEnabled_name,                   "stringCacheEnabled")                       \
    template(numberOfLeadingZeros_name,                 "numberOfLeadingZeros")                     \
-diff --git a/src/share/vm/memory/dump.cpp b/src/share/vm/memory/dump.cpp
---- openjdk/hotspot/src/share/vm/memory/dump.cpp
-+++ openjdk/hotspot/src/share/vm/memory/dump.cpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/memory/dump.cpp openjdk/hotspot/src/share/vm/memory/dump.cpp
+--- openjdk.orig/hotspot/src/share/vm/memory/dump.cpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/memory/dump.cpp	2013-01-16 00:43:46.135846474 +0000
 @@ -78,8 +78,8 @@
    void do_oop(oop* p) {
      if (p != NULL) {
@@ -386,12 +377,12 @@ diff --git a/src/share/vm/memory/dump.cpp b/src/share/vm/memory/dump.cpp
 -
 +      if (obj->klass() == SystemDictionary::String_klass() &&
 +          java_lang_String::has_hash_field()) {
-         int hash = java_lang_String::hash_string(obj);
+         int hash = java_lang_String::to_hash(obj);
          obj->int_field_put(hash_offset, hash);
        }
-diff --git a/src/share/vm/opto/graphKit.cpp b/src/share/vm/opto/graphKit.cpp
---- openjdk/hotspot/src/share/vm/opto/graphKit.cpp
-+++ openjdk/hotspot/src/share/vm/opto/graphKit.cpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/opto/graphKit.cpp openjdk/hotspot/src/share/vm/opto/graphKit.cpp
+--- openjdk.orig/hotspot/src/share/vm/opto/graphKit.cpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/opto/graphKit.cpp	2013-01-16 00:42:59.091088517 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
@@ -399,7 +390,7 @@ diff --git a/src/share/vm/opto/graphKit.cpp b/src/share/vm/opto/graphKit.cpp
   * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
   *
   * This code is free software; you can redistribute it and/or modify it
-@@ -3748,3 +3748,81 @@
+@@ -3730,3 +3730,81 @@
    final_sync(ideal);
  }
  #undef __
@@ -481,9 +472,9 @@ diff --git a/src/share/vm/opto/graphKit.cpp b/src/share/vm/opto/graphKit.cpp
 +  store_to_memory(ctrl, basic_plus_adr(str, count_offset),
 +                  value, T_INT, count_field_idx);
 +}
-diff --git a/src/share/vm/opto/graphKit.hpp b/src/share/vm/opto/graphKit.hpp
---- openjdk/hotspot/src/share/vm/opto/graphKit.hpp
-+++ openjdk/hotspot/src/share/vm/opto/graphKit.hpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/opto/graphKit.hpp openjdk/hotspot/src/share/vm/opto/graphKit.hpp
+--- openjdk.orig/hotspot/src/share/vm/opto/graphKit.hpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/opto/graphKit.hpp	2013-01-16 00:42:59.095088581 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
@@ -506,9 +497,9 @@ diff --git a/src/share/vm/opto/graphKit.hpp b/src/share/vm/opto/graphKit.hpp
    // Handy for making control flow
    IfNode* create_and_map_if(Node* ctrl, Node* tst, float prob, float cnt) {
      IfNode* iff = new (C, 2) IfNode(ctrl, tst, prob, cnt);// New IfNode's
-diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call.cpp
---- openjdk/hotspot/src/share/vm/opto/library_call.cpp
-+++ openjdk/hotspot/src/share/vm/opto/library_call.cpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/opto/library_call.cpp openjdk/hotspot/src/share/vm/opto/library_call.cpp
+--- openjdk.orig/hotspot/src/share/vm/opto/library_call.cpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/opto/library_call.cpp	2013-01-16 00:42:59.095088581 +0000
 @@ -147,7 +147,8 @@
      return generate_method_call(method_id, true, false);
    }
@@ -519,7 +510,7 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
    bool inline_string_compareTo();
    bool inline_string_indexOf();
    Node* string_indexOf(Node* string_object, ciTypeArray* target_array, jint offset, jint cache_i, jint md2_i);
-@@ -844,48 +845,45 @@
+@@ -844,48 +845,76 @@
  
  
  //------------------------------make_string_method_node------------------------
@@ -588,13 +579,18 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
      result = new (C, 5) StrEqualsNode(control(), memory(TypeAryPtr::CHARS),
 -                                      str1_start, str2_start, cnt1);
 +                               str1_start, str2_start, str1_len);
-     break;
-   default:
-     ShouldNotReachHere();
-@@ -898,15 +896,42 @@
-   return _gvn.transform(result);
- }
- 
++    break;
++  default:
++    ShouldNotReachHere();
++    return NULL;
++  }
++
++  // All these intrinsics have checks.
++  C->set_has_split_ifs(true); // Has chance for split-if optimization
++
++  return _gvn.transform(result);
++}
++
 +// Helper method for String intrinsic functions. This version is called
 +// with str1 and str2 pointing to char[] nodes, with cnt1 and cnt2 pointing
 +// to Int nodes containing the lenghts of str1 and str2.
@@ -614,20 +610,10 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
 +  case Op_StrEquals:
 +    result = new (C, 5) StrEqualsNode(control(), memory(TypeAryPtr::CHARS),
 +                                 str1_start, str2_start, cnt1);
-+    break;
-+  default:
-+    ShouldNotReachHere();
-+    return NULL;
-+  }
-+
-+  // All these intrinsics have checks.
-+  C->set_has_split_ifs(true); // Has chance for split-if optimization
-+
-+  return _gvn.transform(result);
-+}
-+
- //------------------------------inline_string_compareTo------------------------
- bool LibraryCallKit::inline_string_compareTo() {
+     break;
+   default:
+     ShouldNotReachHere();
+@@ -903,10 +932,6 @@
  
    if (!Matcher::has_match_rule(Op_StrComp)) return false;
  
@@ -690,9 +676,6 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
 -    // Get counts for string and argument
 -    Node* receiver_cnta = basic_plus_adr(receiver, receiver, count_offset);
 -    receiver_cnt  = make_load(no_ctrl, receiver_cnta, TypeInt::INT, T_INT, string_type->add_offset(count_offset));
--
--    Node* argument_cnta = basic_plus_adr(argument, argument, count_offset);
--    argument_cnt  = make_load(no_ctrl, argument_cnta, TypeInt::INT, T_INT, string_type->add_offset(count_offset));
 +    Node* no_ctrl = NULL;
 +
 +    // Get start addr of receiver
@@ -707,7 +690,9 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
 +    Node* argument_val   = load_String_value(no_ctrl, argument);
 +    Node* argument_offset = load_String_offset(no_ctrl, argument);
 +    Node* argument_start = array_element_address(argument_val, argument_offset, T_CHAR);
-+
+ 
+-    Node* argument_cnta = basic_plus_adr(argument, argument, count_offset);
+-    argument_cnt  = make_load(no_ctrl, argument_cnta, TypeInt::INT, T_INT, string_type->add_offset(count_offset));
 +    // Get length of argument
 +    Node* argument_cnt  = load_String_length(no_ctrl, argument);
  
@@ -718,16 +703,14 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
        region->init_req(4, if_ne);
      }
 -  }
--
+ 
 -  // Check for count == 0 is done by mach node StrEquals.
--
++    // Check for count == 0 is done by assembler code for StrEquals.
+ 
 -  if (!stopped()) {
 -    Node* equals = make_string_method_node(Op_StrEquals, receiver, receiver_cnt, argument, argument_cnt);
 -    phi->init_req(1, equals);
 -    region->init_req(1, control());
-+
-+    // Check for count == 0 is done by assembler code for StrEquals.
-+
 +    if (!stopped()) {
 +      Node* equals = make_string_method_node(Op_StrEquals, receiver_start, receiver_cnt, argument_start, argument_cnt);
 +      phi->init_req(1, equals);
@@ -778,9 +761,6 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
 -    // Get counts for string and substr
 -    Node* source_cnta = basic_plus_adr(receiver, receiver, count_offset);
 -    Node* source_cnt  = make_load(no_ctrl, source_cnta, TypeInt::INT, T_INT, string_type->add_offset(count_offset));
--
--    Node* substr_cnta = basic_plus_adr(argument, argument, count_offset);
--    Node* substr_cnt  = make_load(no_ctrl, substr_cnta, TypeInt::INT, T_INT, string_type->add_offset(count_offset));
 +    // Get start addr of source string
 +    Node* source = load_String_value(no_ctrl, receiver);
 +    Node* source_offset = load_String_offset(no_ctrl, receiver);
@@ -793,7 +773,9 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
 +    Node* substr = load_String_value(no_ctrl, argument);
 +    Node* substr_offset = load_String_offset(no_ctrl, argument);
 +    Node* substr_start = array_element_address(substr, substr_offset, T_CHAR);
-+
+ 
+-    Node* substr_cnta = basic_plus_adr(argument, argument, count_offset);
+-    Node* substr_cnt  = make_load(no_ctrl, substr_cnta, TypeInt::INT, T_INT, string_type->add_offset(count_offset));
 +    // Get length of source string
 +    Node* substr_cnt  = load_String_length(no_ctrl, argument);
  
@@ -831,9 +813,9 @@ diff --git a/src/share/vm/opto/library_call.cpp b/src/share/vm/opto/library_call
      // constant strings have no offset and count == length which
      // simplifies the resulting code somewhat so lets optimize for that.
      if (o != 0 || c != pat->length()) {
-diff --git a/src/share/vm/opto/stringopts.cpp b/src/share/vm/opto/stringopts.cpp
---- openjdk/hotspot/src/share/vm/opto/stringopts.cpp
-+++ openjdk/hotspot/src/share/vm/opto/stringopts.cpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/opto/stringopts.cpp openjdk/hotspot/src/share/vm/opto/stringopts.cpp
+--- openjdk.orig/hotspot/src/share/vm/opto/stringopts.cpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/opto/stringopts.cpp	2013-01-16 00:42:59.099088646 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 2009, 2011, Oracle and/or its affiliates. All rights reserved.
@@ -912,9 +894,9 @@ diff --git a/src/share/vm/opto/stringopts.cpp b/src/share/vm/opto/stringopts.cpp
  
    // hook up the outgoing control and result
    kit.replace_call(sc->end(), result);
-diff --git a/src/share/vm/opto/stringopts.hpp b/src/share/vm/opto/stringopts.hpp
---- openjdk/hotspot/src/share/vm/opto/stringopts.hpp
-+++ openjdk/hotspot/src/share/vm/opto/stringopts.hpp
+diff -Nru openjdk.orig/hotspot/src/share/vm/opto/stringopts.hpp openjdk/hotspot/src/share/vm/opto/stringopts.hpp
+--- openjdk.orig/hotspot/src/share/vm/opto/stringopts.hpp	2012-10-17 08:52:30.000000000 +0100
++++ openjdk/hotspot/src/share/vm/opto/stringopts.hpp	2013-01-16 00:42:59.103088711 +0000
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
