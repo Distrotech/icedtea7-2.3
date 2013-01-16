@@ -1,5 +1,9 @@
 2013-01-16  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: Recategorise 7197906 as a backport.
+
+2013-01-16  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* NEWS: Add 2.3.5 section and document
 	fix of Zero build.
 	* configure.ac: Bump to 2.3.5pre.
