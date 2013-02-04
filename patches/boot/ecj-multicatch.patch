@@ -219,3 +219,33 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/util/Hashtable.java openj
              throw new Error("Failed to record hashSeed offset", e);
          }
       }
+diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/reflect/Proxy.java openjdk-boot/jdk/src/share/classes/java/lang/reflect/Proxy.java
+--- openjdk-boot.orig/jdk/src/share/classes/java/lang/reflect/Proxy.java	2013-02-02 16:14:27.971429681 +0000
++++ openjdk-boot/jdk/src/share/classes/java/lang/reflect/Proxy.java	2013-02-02 16:14:58.283922372 +0000
+@@ -738,7 +738,9 @@
+     private static Object newInstance(Constructor<?> cons, InvocationHandler h) {
+         try {
+             return cons.newInstance(new Object[] {h} );
+-        } catch (IllegalAccessException | InstantiationException e) {
++        } catch (IllegalAccessException e) {
++            throw new InternalError(e.toString());
++        } catch (InstantiationException e) {
+             throw new InternalError(e.toString());
+         } catch (InvocationTargetException e) {
+             Throwable t = e.getCause();
+diff -Nru openjdk-boot.orig/corba/src/share/classes/com/sun/corba/se/impl/io/ObjectStreamClass.java openjdk-boot/corba/src/share/classes/com/sun/corba/se/impl/io/ObjectStreamClass.java
+--- openjdk-boot.orig/corba/src/share/classes/com/sun/corba/se/impl/io/ObjectStreamClass.java	2013-02-02 16:22:25.819214619 +0000
++++ openjdk-boot/corba/src/share/classes/com/sun/corba/se/impl/io/ObjectStreamClass.java	2013-02-02 16:24:35.213314506 +0000
+@@ -396,8 +396,10 @@
+                         (java.io.ObjectStreamField[])pf.get(type);
+                     return translateFields(fields);
+                 }
+-            } catch (NoSuchFieldException | IllegalAccessException |
+-                    IllegalArgumentException | ClassCastException e) {
++            } catch (NoSuchFieldException e) {
++            } catch (IllegalAccessException e) {
++            } catch (IllegalArgumentException e) {
++            } catch (ClassCastException e) {
+             }
+             return null;
+         }

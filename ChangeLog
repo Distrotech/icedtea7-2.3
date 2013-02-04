@@ -1,3 +1,27 @@
+2013-02-04  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* Makefile.am,
+	(CORBA_CHANGESET): Update to IcedTea7 2.3 forest head,
+	bringing in the security fixes.
+	(JAXP_CHANGESET): Likewise.
+	(JAXWS_CHANGESET): Likewise.
+	(JDK_CHANGESET): Likewise.
+	(LANGTOOLS_CHANGESET): Likewise.
+	(OPENJDK_CHANGESET): Likewise.
+	(CORBA_SHA256SUM): Likewise.
+	(JAXP_SHA256SUM): Likewise.
+	(JAXWS_SHA256SUM): Likewise.
+	(JDK_SHA256SUM): Likewise.
+	(LANGTOOLS_SHA256SUM): Likewise.
+	(OPENJDK_SHA256SUM): Likewise.
+	(ICEDTEA_BOOTSTRAP_CLASSES): Depend on java.lang.ClassValue.
+	* hotspot.map: Update HotSpot default to 2.3 forest
+	head.
+	* patches/boot/ecj-diamond.patch,
+	* patches/boot/ecj-multicatch.patch,
+	* patches/boot/ecj-trywithresources.patch:
+	Extend to work against the updated tree.
+
 2013-01-16  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* NEWS: Recategorise 7197906 as a backport.
