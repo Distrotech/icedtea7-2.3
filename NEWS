@@ -52,6 +52,7 @@ New in release 2.3.5 (2013-XX-XX):
   - S7175616: Port fix for TimeZone from JDK 8 to JDK 7
 * Bug fixes
   - Fix build using Zero's HotSpot so all patches apply again.
+  - PR1295: jamvm parallel unpack failure
 
 New in release 2.3.4 (2013-01-15):
 

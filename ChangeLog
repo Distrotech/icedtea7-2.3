@@ -1,5 +1,11 @@
 2013-02-05  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: List PR1295.
+	* Makefile.am:
+	(extract-jamvm): Depend on download-jamvm.
+
+2013-02-05  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* NEWS: Updated with latest security fixes.
 
 2013-02-04  Andrew John Hughes  <gnu.andrew@member.fsf.org>
