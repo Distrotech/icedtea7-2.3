@@ -1057,3 +1057,29 @@ diff -Nru openjdk-boot.orig/jdk/src/solaris/classes/sun/nio/fs/UnixFileStore.jav
          } catch (IOException x) {
          }
          return result;
+diff -Nru openjdk-boot.orig/jdk/src/share/classes/sun/launcher/LauncherHelper.java openjdk-boot/jdk/src/share/classes/sun/launcher/LauncherHelper.java
+--- openjdk-boot.orig/jdk/src/share/classes/sun/launcher/LauncherHelper.java	2013-02-12 01:56:53.097168690 +0000
++++ openjdk-boot/jdk/src/share/classes/sun/launcher/LauncherHelper.java	2013-02-12 02:12:21.112109410 +0000
+@@ -555,8 +555,9 @@
+                 if (parent == null) {
+                     parent = new File(".");
+                 }
+-                try (DirectoryStream<Path> dstream =
+-                        Files.newDirectoryStream(parent.toPath(), glob)) {
++		DirectoryStream<Path> dstream = null;
++                try {
++		    dstream = Files.newDirectoryStream(parent.toPath(), glob);
+                     int entries = 0;
+                     for (Path p : dstream) {
+                         out.add(p.normalize().toString());
+@@ -572,6 +573,10 @@
+                         System.err.print(e);
+                     }
+                 }
++		finally {
++		    if (dstream != null)
++			try { dstream.close(); } catch (IOException ex) {}
++		}
+             } else {
+                 out.add(a.arg);
+             }
