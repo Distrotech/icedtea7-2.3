@@ -10,7 +10,7 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
-New in release 2.3.5 (2013-XX-XX):
+New in release 2.3.5 (2013-02-12):
 
 * Security fixes
   - S6563318, CVE-2013-0424: RMI data sanitization
