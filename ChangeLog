@@ -1,3 +1,25 @@
+2013-02-20  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* Makefile.am,
+	(JDK_UPDATE_VERSION): Bump to 15.
+	(CORBA_CHANGESET): Update to IcedTea7 2.3 forest head,
+	bringing in latest security updates.
+	(JAXP_CHANGESET): Likewise.
+	(JAXWS_CHANGESET): Likewise.
+	(JDK_CHANGESET): Likewise.
+	(LANGTOOLS_CHANGESET): Likewise.
+	(OPENJDK_CHANGESET): Likewise.
+	(CORBA_SHA256SUM): Likewise.
+	(JAXP_SHA256SUM): Likewise.
+	(JAXWS_SHA256SUM): Likewise.
+	(JDK_SHA256SUM): Likewise.
+	(LANGTOOLS_SHA256SUM): Likewise.
+	(OPENJDK_SHA256SUM): Likewise.
+	* hotspot.map: Sync default with 2.3 HEAD as other
+	changes above.
+	* patches/boot/ecj-stringswitch.patch:
+	Update MethodHandleNatives case.
+
 2013-02-13  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* configure.ac: Bump to 2.3.7pre.

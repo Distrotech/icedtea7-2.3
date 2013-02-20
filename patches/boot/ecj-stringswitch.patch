@@ -1,6 +1,6 @@
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/ClassReader.java openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/ClassReader.java
---- openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/ClassReader.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/ClassReader.java	2013-01-15 02:08:56.592702486 +0000
+--- openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/ClassReader.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/ClassReader.java	2013-02-20 01:19:23.757194433 +0000
 @@ -350,18 +350,15 @@
              if (attrCommands != null) {
                  Attribute.Layout lkey = Attribute.keyForLookup(ctype, name);
@@ -30,8 +30,8 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Cla
              }
              // Find canonical instance of the requested attribute.
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Driver.java openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/Driver.java
---- openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Driver.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/Driver.java	2013-01-15 02:08:56.608702746 +0000
+--- openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Driver.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/Driver.java	2013-02-20 01:19:23.757194433 +0000
 @@ -73,16 +73,14 @@
          {
              // Non-standard, undocumented "--unpack" switch enables unpack mode.
@@ -89,8 +89,8 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Dri
  
          if (logFile != null && !logFile.equals("")) {
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Package.java openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/Package.java
---- openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Package.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/Package.java	2013-01-15 02:08:56.608702746 +0000
+--- openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Package.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/com/sun/java/util/jar/pack/Package.java	2013-02-20 01:19:23.757194433 +0000
 @@ -1107,30 +1107,25 @@
          // what is one of { Debug, Compile, Constant, Exceptions, InnerClasses }
          if (verbose > 0)
@@ -142,8 +142,8 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/java/util/jar/pack/Pac
      }
  
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/security/ntlm/NTLM.java openjdk-boot/jdk/src/share/classes/com/sun/security/ntlm/NTLM.java
---- openjdk-boot.orig/jdk/src/share/classes/com/sun/security/ntlm/NTLM.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/com/sun/security/ntlm/NTLM.java	2013-01-15 02:08:56.612702810 +0000
+--- openjdk-boot.orig/jdk/src/share/classes/com/sun/security/ntlm/NTLM.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/com/sun/security/ntlm/NTLM.java	2013-02-20 01:19:23.757194433 +0000
 @@ -64,17 +64,23 @@
  
      protected NTLM(String version) throws NTLMException {
@@ -180,17 +180,22 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/com/sun/security/ntlm/NTLM.jav
              fac = SecretKeyFactory.getInstance ("DES");
              cipher = Cipher.getInstance ("DES/ECB/NoPadding");
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleNatives.java openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleNatives.java
---- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleNatives.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleNatives.java	2013-01-15 02:19:34.315049222 +0000
-@@ -411,104 +411,99 @@
+--- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleNatives.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleNatives.java	2013-02-20 01:35:29.564524781 +0000
+@@ -411,111 +411,106 @@
      static boolean isCallerSensitive(MemberName mem) {
-         assert(mem.isInvocable());
+         if (!mem.isInvocable())  return false;  // fields are not caller sensitive
          Class<?> defc = mem.getDeclaringClass();
 -        switch (mem.getName()) {
 -        case "doPrivileged":
+-        case "doPrivilegedWithCombiner":
 +	String memName = mem.getName();
-+	if ("doPrivileged".equals(memName)) {
++	if ("doPrivileged".equals(memName) ||
++	    "doPrivilegedWithCombiner".equals(memName)) {
              return defc == java.security.AccessController.class;
+-        case "checkMemberAccess":
++	} else if ("checkMemberAccess".equals(memName)) {
+             return canBeCalledVirtual(mem, java.lang.SecurityManager.class);
 -        case "getUnsafe":
 +        } else if ("getUnsafe".equals(memName)) {
              return defc == sun.misc.Unsafe.class;
@@ -320,7 +325,7 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleN
 -            break;
 -        case "getContextClassLoader":
 +        } else if ("getContextClassLoader".equals(memName)) {
-             return defc == java.lang.Thread.class;
+             return canBeCalledVirtual(mem, java.lang.Thread.class);
 -        case "getPackage":
 -        case "getPackages":
 +        } else if ("getPackage".equals(memName) ||
@@ -346,11 +351,17 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleN
 -        case "getCallerClassLoader":
 +	} else if ("getCallerClassLoader".equals(memName)) {
              return defc == java.lang.ClassLoader.class;
+-        case "registerAsParallelCapable":
++        } else if ("registerAsParallelCapable".equals(memName)) {
+             return canBeCalledVirtual(mem, java.lang.ClassLoader.class);
 -        case "getProxyClass":
 -        case "newProxyInstance":
 +        } else if ("getProxyClass".equals(memName) ||
 +		   "newProxyInstance".equals(memName)) {
              return defc == java.lang.reflect.Proxy.class;
+-        case "asInterfaceInstance":
++        } else if ("asInterfaceInstance".equals(memName)) {
+             return defc == java.lang.invoke.MethodHandleProxies.class;
 -        case "getBundle":
 -        case "clearCache":
 +        } else if ("getBundle".equals(memName) ||
@@ -359,9 +370,9 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleN
          }
          return false;
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java
---- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java	2013-01-15 02:08:56.620702941 +0000
-@@ -219,14 +219,16 @@
+--- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java	2013-02-20 01:19:23.757194433 +0000
+@@ -268,14 +268,16 @@
  
      private static
      boolean isObjectMethod(Method m) {
@@ -382,7 +393,7 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleP
              return (m.getReturnType() == boolean.class
                      && m.getParameterTypes().length == 1
                      && m.getParameterTypes()[0] == Object.class);
-@@ -237,12 +239,14 @@
+@@ -286,12 +288,14 @@
      private static
      Object callObjectMethod(Object self, Method m, Object[] args) {
          assert(isObjectMethod(m)) : m;
@@ -402,9 +413,9 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleP
          }
          return null;
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/sun/launcher/LauncherHelper.java openjdk-boot/jdk/src/share/classes/sun/launcher/LauncherHelper.java
---- openjdk-boot.orig/jdk/src/share/classes/sun/launcher/LauncherHelper.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/sun/launcher/LauncherHelper.java	2013-01-15 02:08:56.624703006 +0000
-@@ -117,24 +117,20 @@
+--- openjdk-boot.orig/jdk/src/share/classes/sun/launcher/LauncherHelper.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/sun/launcher/LauncherHelper.java	2013-02-20 01:19:23.757194433 +0000
+@@ -119,24 +119,20 @@
          String optStr = (opts.length > 1 && opts[1] != null)
                  ? opts[1].trim()
                  : "all";
@@ -441,8 +452,8 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/sun/launcher/LauncherHelper.ja
  
      /*
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/sun/security/util/DisabledAlgorithmConstraints.java openjdk-boot/jdk/src/share/classes/sun/security/util/DisabledAlgorithmConstraints.java
---- openjdk-boot.orig/jdk/src/share/classes/sun/security/util/DisabledAlgorithmConstraints.java	2013-01-14 22:25:02.000000000 +0000
-+++ openjdk-boot/jdk/src/share/classes/sun/security/util/DisabledAlgorithmConstraints.java	2013-01-15 02:08:56.628703070 +0000
+--- openjdk-boot.orig/jdk/src/share/classes/sun/security/util/DisabledAlgorithmConstraints.java	2013-02-17 18:47:55.000000000 +0000
++++ openjdk-boot/jdk/src/share/classes/sun/security/util/DisabledAlgorithmConstraints.java	2013-02-20 01:19:23.757194433 +0000
 @@ -378,19 +378,23 @@
              GE;         // ">="
  
