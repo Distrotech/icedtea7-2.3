@@ -12,6 +12,18 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.7 (2013-02-XX):
 
+* Security fixes
+  - S8004937, CVE-2013-1484: Improve proxy construction
+  - S8006439, CVE-2013-1485: Improve MethodHandles coverage
+  - S8006446, CVE-2013-1486: Restrict MBeanServer access
+  - S8006777, CVE-2013-0169: Improve TLS handling of invalid messages
+  - S8007688: Blacklist known bad certificate
+* Backports
+  - S8007393: Possible race condition after JDK-6664509
+  - S8007611: logging behavior in applet changed
+* Bug fixes
+  - PR1303: Support building with giflib 5
+
 New in release 2.3.6 (2013-02-12):
 
 * Security fixes

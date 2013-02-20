@@ -1,5 +1,9 @@
 2013-02-20  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: List security fixes.
+
+2013-02-20  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* Makefile.am,
 	(JDK_UPDATE_VERSION): Bump to 15.
 	(CORBA_CHANGESET): Update to IcedTea7 2.3 forest head,
