@@ -1,3 +1,8 @@
+2013-02-12  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* configure.ac: Bump to 2.3.7 proper.
+	* NEWS: Set release date for 2.3.7.
+
 2013-02-20  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* NEWS: List security fixes.
