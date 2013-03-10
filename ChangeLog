@@ -1,3 +1,15 @@
+2013-03-08  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* Makefile.am:
+	(ICEDTEA_PATCHES): Add patches.
+	* NEWS: Updated.
+	* patches/8006179-lookup_using_findvirtual.patch,
+	* patches/8006882-sun.proxy.patch:
+	Taken from upstream jdk7u17 b02.
+	* patches/pr1303-ifdef_fix.patch:
+	PR1303 issue (#ifdef vs. #if) caught by Bernhard
+	Rosenkränzer.
+
 2013-03-07  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* Makefile.am,

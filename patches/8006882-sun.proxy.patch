@@ -1,0 +1,106 @@
+# HG changeset patch
+# User mchung
+# Date 1359414910 28800
+# Node ID cbbb166b38eb15f5d5c68e913ee18f6f352b7af0
+# Parent  044ea56a339dfd92b723a5e81941b646f9d26071
+8006882: Proxy generated classes in sun.proxy package breaks JMockit
+Reviewed-by: alanb, ahgross
+
+diff --git a/src/share/classes/java/lang/reflect/Proxy.java b/src/share/classes/java/lang/reflect/Proxy.java
+--- openjdk/jdk/src/share/classes/java/lang/reflect/Proxy.java
++++ openjdk/jdk/src/share/classes/java/lang/reflect/Proxy.java
+@@ -609,7 +609,7 @@
+             }
+ 
+             if (proxyPkg == null) {
+-                // if no non-public proxy interfaces, use sun.proxy package
++                // if no non-public proxy interfaces, use com.sun.proxy package
+                 proxyPkg = ReflectUtil.PROXY_PACKAGE + ".";
+             }
+ 
+diff --git a/src/share/classes/sun/reflect/misc/ReflectUtil.java b/src/share/classes/sun/reflect/misc/ReflectUtil.java
+--- openjdk/jdk/src/share/classes/sun/reflect/misc/ReflectUtil.java
++++ openjdk/jdk/src/share/classes/sun/reflect/misc/ReflectUtil.java
+@@ -202,5 +202,5 @@
+         }
+     }
+ 
+-    public static final String PROXY_PACKAGE = "sun.proxy";
++    public static final String PROXY_PACKAGE = "com.sun.proxy";
+ }
+diff --git a/src/share/lib/security/java.security b/src/share/lib/security/java.security
+--- openjdk/jdk/src/share/lib/security/java.security
++++ openjdk/jdk/src/share/lib/security/java.security
+@@ -130,6 +130,7 @@
+                com.sun.imageio.,\
+                com.sun.istack.internal.,\
+                com.sun.jmx.,\
++               com.sun.proxy.,\
+                com.sun.org.apache.xerces.internal.utils.,\
+                com.sun.org.apache.xalan.internal.utils.,\
+                com.sun.org.glassfish.external.,\
+@@ -152,6 +153,7 @@
+                    com.sun.imageio.,\
+                    com.sun.istack.internal.,\
+                    com.sun.jmx.,\
++                   com.sun.proxy.,\
+                    com.sun.org.apache.xerces.internal.utils.,\
+                    com.sun.org.apache.xalan.internal.utils.,\
+                    com.sun.org.glassfish.external.,\
+diff --git a/src/share/lib/security/java.security-macosx b/src/share/lib/security/java.security-macosx
+--- openjdk/jdk/src/share/lib/security/java.security-macosx
++++ openjdk/jdk/src/share/lib/security/java.security-macosx
+@@ -131,6 +131,7 @@
+                com.sun.imageio.,\
+                com.sun.istack.internal.,\
+                com.sun.jmx.,\
++               com.sun.proxy.,\
+                com.sun.org.apache.xerces.internal.utils.,\
+                com.sun.org.apache.xalan.internal.utils.,\
+                com.sun.org.glassfish.external.,\
+@@ -154,6 +155,7 @@
+                    com.sun.imageio.,\
+                    com.sun.istack.internal.,\
+                    com.sun.jmx.,\
++                   com.sun.proxy.,\
+                    com.sun.org.apache.xerces.internal.utils.,\
+                    com.sun.org.apache.xalan.internal.utils.,\
+                    com.sun.org.glassfish.external.,\
+diff --git a/src/share/lib/security/java.security-solaris b/src/share/lib/security/java.security-solaris
+--- openjdk/jdk/src/share/lib/security/java.security-solaris
++++ openjdk/jdk/src/share/lib/security/java.security-solaris
+@@ -132,6 +132,7 @@
+                com.sun.imageio.,\
+                com.sun.istack.internal.,\
+                com.sun.jmx.,\
++               com.sun.proxy.,\
+                com.sun.org.apache.xerces.internal.utils.,\
+                com.sun.org.apache.xalan.internal.utils.,\
+                com.sun.org.glassfish.external.,\
+@@ -154,6 +155,7 @@
+                    com.sun.imageio.,\
+                    com.sun.istack.internal.,\
+                    com.sun.jmx.,\
++                   com.sun.proxy.,\
+                    com.sun.org.apache.xerces.internal.utils.,\
+                    com.sun.org.apache.xalan.internal.utils.,\
+                    com.sun.org.glassfish.external.,\
+diff --git a/src/share/lib/security/java.security-windows b/src/share/lib/security/java.security-windows
+--- openjdk/jdk/src/share/lib/security/java.security-windows
++++ openjdk/jdk/src/share/lib/security/java.security-windows
+@@ -131,6 +131,7 @@
+                com.sun.imageio.,\
+                com.sun.istack.internal.,\
+                com.sun.jmx.,\
++               com.sun.proxy.,\
+                com.sun.org.apache.xerces.internal.utils.,\
+                com.sun.org.apache.xalan.internal.utils.,\
+                com.sun.org.glassfish.external.,\
+@@ -153,6 +154,7 @@
+                    com.sun.imageio.,\
+                    com.sun.istack.internal.,\
+                    com.sun.jmx.,\
++                   com.sun.proxy.,\
+                    com.sun.org.apache.xerces.internal.utils.,\
+                    com.sun.org.apache.xalan.internal.utils.,\
+                    com.sun.org.glassfish.external.,\

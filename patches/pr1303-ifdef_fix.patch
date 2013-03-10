@@ -1,0 +1,19 @@
+# HG changeset patch
+# User andrew
+# Date 1362758030 0
+# Node ID ec275f96d030eff83f7e6cfcdd7daa9cda2b4802
+# Parent  deac45dc94f0504ba17b8afcb54db1fba4e6f9d5
+PR1303: Correct #ifdef to #if
+
+diff --git a/src/share/native/sun/awt/splashscreen/splashscreen_gif.c b/src/share/native/sun/awt/splashscreen/splashscreen_gif.c
+--- openjdk/jdk/src/share/native/sun/awt/splashscreen/splashscreen_gif.c
++++ openjdk/jdk/src/share/native/sun/awt/splashscreen/splashscreen_gif.c
+@@ -316,7 +316,7 @@
+ int
+ SplashDecodeGifStream(Splash * splash, SplashStream * stream)
+ {
+-#ifdef GIFLIB_MAJOR >= 5
++#if GIFLIB_MAJOR >= 5
+     int error = 0;
+     GifFileType *gif = DGifOpen((void *) stream, SplashStreamGifInputFunc, &error);
+ 

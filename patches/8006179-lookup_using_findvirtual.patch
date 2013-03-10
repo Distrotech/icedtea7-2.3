@@ -1,0 +1,27 @@
+# HG changeset patch
+# User jrose
+# Date 1358570871 28800
+# Node ID 4bb16e8e663ad133e0950406bda2261169f3920f
+# Parent  33b30ad1689805e74c85f6df29d2033c796baedb
+8006179: JSR292 MethodHandles lookup with interface using findVirtual()
+Reviewed-by: twisti
+
+diff --git a/src/share/classes/java/lang/invoke/DirectMethodHandle.java b/src/share/classes/java/lang/invoke/DirectMethodHandle.java
+--- openjdk/jdk/src/share/classes/java/lang/invoke/DirectMethodHandle.java
++++ openjdk/jdk/src/share/classes/java/lang/invoke/DirectMethodHandle.java
+@@ -44,6 +44,15 @@
+         if (!m.isResolved())
+             throw new InternalError();
+ 
++        if (m.getDeclaringClass().isInterface() && !m.isAbstract()) {
++            // Check for corner case: invokeinterface of Object method.
++            MemberName m2 = new MemberName(Object.class, m.getName(), m.getMethodType(), m.getModifiers());
++            m2 = MemberName.getFactory().resolveOrNull(m2, false, null);
++            if (m2 != null && m2.isPublic()) {
++                m = m2;
++            }
++        }
++
+         MethodHandleNatives.init(this, (Object) m, doDispatch, lookupClass);
+     }
+ 

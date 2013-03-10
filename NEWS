@@ -18,6 +18,10 @@ New in release 2.3.8 (2013-04-XX):
 * Backports
   - S8002344: Krb5LoginModule config class does not return proper KDC list from DNS
   - S8004344: Fix a crash in ToolkitErrorHandler() in XlibWrapper.c
+  - S8006179: JSR292 MethodHandles lookup with interface using findVirtual()
+  - S8006882: Proxy generated classes in sun.proxy package breaks JMockit
+* Bug fixes
+  - PR1303: Correct #ifdef to #if
 
 New in release 2.3.7 (2013-02-20):
 
