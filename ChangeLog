@@ -1,5 +1,15 @@
 2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* Makefile.am:
+	(ICEDTEA_PATCHES): Add new patch.
+	* patches/revert-7017193.patch:
+	Revert 7017193 due to performance issues,
+	adding a free call on error, until a better
+	fix is produced.
+	* NEWS: Updated.
+
+2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* hotspot.map: Sync zero option with updates to
 	IcedTea 2.1.
 

@@ -243,7 +243,8 @@ REWRITER_SRCS = $(top_srcdir)/rewriter/com/redhat/rewriter/ClassRewriter.java
 ICEDTEA_PATCHES = \
 	patches/8006179-lookup_using_findvirtual.patch \
 	patches/8006882-sun.proxy.patch \
-	patches/pr1303-ifdef_fix.patch
+	patches/pr1303-ifdef_fix.patch \
+	patches/revert-7017193.patch
 
 # Conditional patches
 

@@ -23,6 +23,7 @@ New in release 2.3.8 (2013-04-11):
 * Bug fixes
   - PR1303: Correct #ifdef to #if
   - PR1340: Simplify the rhino class rewriter to avoid use of concurrency
+  - Revert 7017193 and add the missing free call, until a better fix is ready.
 
 New in release 2.3.7 (2013-02-20):
 
