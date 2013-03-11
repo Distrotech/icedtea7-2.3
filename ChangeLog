@@ -1,5 +1,10 @@
 2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* hotspot.map: Sync zero option with updates to
+	IcedTea 2.1.
+
+2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* configure.ac: Bump to 2.3.8 proper.
 	* NEWS: Set release date for 2.3.8.
 
