@@ -1,5 +1,10 @@
 2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* configure.ac: Bump to 2.3.8 proper.
+	* NEWS: Set release date for 2.3.8.
+
+2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	PR1340: Simplify the rewriter, avoiding concurrency.
 	* NEWS: Mention fix.
 	* rewriter/com/redhat/rewriter/ClassRewriter.java:

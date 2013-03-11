@@ -10,7 +10,7 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
-New in release 2.3.8 (2013-04-XX):
+New in release 2.3.8 (2013-04-11):
 
 * Security fixes
   - S8007014, CVE-2013-0809: Improve image handling
