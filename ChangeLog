@@ -1,3 +1,10 @@
+2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	PR1340: Simplify the rewriter, avoiding concurrency.
+	* NEWS: Mention fix.
+	* rewriter/com/redhat/rewriter/ClassRewriter.java:
+	Always use the single threaded executor.
+
 2013-03-08  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* Makefile.am:

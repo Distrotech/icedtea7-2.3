@@ -22,6 +22,7 @@ New in release 2.3.8 (2013-04-XX):
   - S8006882: Proxy generated classes in sun.proxy package breaks JMockit
 * Bug fixes
   - PR1303: Correct #ifdef to #if
+  - PR1340: Simplify the rhino class rewriter to avoid use of concurrency
 
 New in release 2.3.7 (2013-02-20):
 
