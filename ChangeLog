@@ -1,5 +1,29 @@
 2013-03-12  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* patches/8006179-lookup_using_findvirtual.patch,
+	* patches/8006882-sun.proxy.patch,
+	* patches/pr1303-ifdef_fix.patch:
+	Remove patches that are upstream.
+	* Makefile.am:
+	(CORBA_CHANGESET): Update to IcedTea7 2.3 forest head,
+	syncing with upstream jdk7u17b02 changesets.
+	(JAXP_CHANGESET): Likewise.
+	(JAXWS_CHANGESET): Likewise.
+	(JDK_CHANGESET): Likewise.
+	(LANGTOOLS_CHANGESET): Likewise.
+	(OPENJDK_CHANGESET): Likewise.
+	(CORBA_SHA256SUM): Likewise.
+	(JAXP_SHA256SUM): Likewise.
+	(JAXWS_SHA256SUM): Likewise.
+	(JDK_SHA256SUM): Likewise.
+	(LANGTOOLS_SHA256SUM): Likewise.
+	(OPENJDK_SHA256SUM): Likewise.
+	(ICEDTEA_PATCHES): Drop upstream patches.
+	* hotspot.map: Sync default with 2.3 HEAD as other
+	changes above.
+
+2013-03-12  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* configure.ac: Bump to 2.3.9pre.
 	* NEWS: Add section for 2.3.9.
 
@@ -45,7 +69,7 @@
 2013-03-07  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* Makefile.am,
-	(JDK_UPDATE_VERSION): Bump to 15.
+	(JDK_UPDATE_VERSION): Bump to 17.
 	(OPENJDK_VERSION): Bump to b02.
 	(CORBA_CHANGESET): Update to IcedTea7 2.3 forest head,
 	bringing in security fixes & backports.
