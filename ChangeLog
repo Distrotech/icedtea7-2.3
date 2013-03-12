@@ -1,3 +1,8 @@
+2013-03-12  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* configure.ac: Bump to 2.3.9pre.
+	* NEWS: Add section for 2.3.9.
+
 2013-03-11  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* Makefile.am:
