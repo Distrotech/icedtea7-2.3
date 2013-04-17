@@ -241,7 +241,7 @@ REWRITER_SRCS = $(top_srcdir)/rewriter/com/redhat/rewriter/ClassRewriter.java
 # Patch list
 
 ICEDTEA_PATCHES = \
-	patches/revert-7017193.patch
+	patches/hotspot/$(HSBUILD)/revert-7017193.patch
 
 # Conditional patches
 

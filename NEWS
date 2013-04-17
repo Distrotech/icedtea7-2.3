@@ -12,6 +12,10 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.9 (2013-04-XX):
 
+* Bug fixes
+  - PR1363: Fedora 19 / rawhide FTBFS SIGILL
+  - PR1401: Fix Zero build on 2.3.8
+
 New in release 2.3.8 (2013-03-11):
 
 * Security fixes

@@ -1,3 +1,21 @@
+2013-04-08  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	PR1363: Fedora 19 / rawhide FTBFS SIGILL
+	PR1401: Fix Zero build on 2.3.8
+	* Makefile.am:
+	(ICEDTEA_PATCHES): Obtain revert-7017193 patch
+	from HotSpot-dependent directory.
+	* hotspot.map: Update zero to bring in removal
+	of debuginfo files & ARM fix.
+	* patches/hotspot/zero/7089790-bsd_port.patch:
+	Regenerated.
+	* patches/hotspot/zero/revert-7017193.patch:
+	Taken from 2.1.
+	* patches/revert-7017193.patch: Moved to ...
+	* patches/hotspot/original/revert-7017193.patch:
+	... here.
+	* NEWS: Updated.
+
 2013-03-12  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* patches/8006179-lookup_using_findvirtual.patch,
