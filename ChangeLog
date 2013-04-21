@@ -1,5 +1,10 @@
 2013-04-21  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* Makefile.am:
+	(ICEDTEA_NAME): Make same across all versions.
+
+2013-04-21  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* configure.ac: Bump to 2.3.9 proper.
 	* NEWS: Set release date for 2.3.9.
 
