@@ -10,7 +10,7 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
-New in release 2.3.9 (2013-04-XX):
+New in release 2.3.9 (2013-04-21):
 
 * Security fixes
   - S6657673, CVE-2013-1518: Issues with JAXP
