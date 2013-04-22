@@ -1,5 +1,9 @@
 2013-04-21  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: Remove duplicate item.
+
+2013-04-21  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* Makefile.am:
 	(ICEDTEA_NAME): Make same across all versions.
 

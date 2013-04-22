@@ -53,7 +53,6 @@ New in release 2.3.9 (2013-04-21):
   - PR1401: Fix Zero build on 2.3.8
   - Fix offset problem in ICU LETableReference.
   - Change -Werror fix to preserve OpenJDK default.
-  - PR1303: Correct #ifdef to #if
   - PR1404: Failure to bootstrap with ecj 4.2
 
 New in release 2.3.8 (2013-03-11):
