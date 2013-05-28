@@ -66,6 +66,8 @@ REWRITER_BUILD_DIR = $(abs_top_builddir)/rewriter.build
 STAGE1_BOOT_DIR = $(abs_top_builddir)/bootstrap/boot
 STAGE2_BOOT_DIR = $(abs_top_builddir)/bootstrap/icedtea
 JAMVM_IMPORT_PATH = $(abs_top_builddir)/jamvm/install/hotspot
+STAGE1_BOOT_RUNTIME = $(STAGE1_BOOT_DIR)/jre/lib/rt.jar
+STAGE2_BOOT_RUNTIME = $(STAGE2_BOOT_DIR)/jre/lib/rt.jar
 
 # Source directories
 
@@ -1630,14 +1632,13 @@ endif
 	ln -sf ../../../javap $(STAGE1_BOOT_DIR)/bin/javap
 	mkdir -p $(STAGE1_BOOT_DIR)/lib/modules
 	mkdir -p $(STAGE1_BOOT_DIR)/jre/lib && \
-	cp $(SYSTEM_JDK_DIR)/jre/lib/rt.jar \
-	  $(STAGE1_BOOT_DIR)/jre/lib/rt.jar && \
-	chmod u+w $(STAGE1_BOOT_DIR)/jre/lib/rt.jar
+	cp $(SYSTEM_JDK_DIR)/jre/lib/rt.jar $(STAGE1_BOOT_RUNTIME) && \
+	chmod u+w $(STAGE1_BOOT_RUNTIME)
 	mkdir -p $(STAGE1_BOOT_DIR)/lib && \
 	if [ -e $(SYSTEM_JDK_DIR)/lib/tools.jar ] ; then \
 	  ln -sf $(SYSTEM_JDK_DIR)/lib/tools.jar $(STAGE1_BOOT_DIR)/lib/tools.jar ; \
 	else \
-	  ln -sf $(STAGE1_BOOT_DIR)/jre/lib/rt.jar $(STAGE1_BOOT_DIR)/lib/tools.jar ; \
+	  ln -sf $(STAGE1_BOOT_RUNTIME) $(STAGE1_BOOT_DIR)/lib/tools.jar ; \
 	fi
 	ln -sf $(SYSTEM_JDK_DIR)/jre/lib/$(JRE_ARCH_DIR) \
 	  $(STAGE1_BOOT_DIR)/jre/lib/ && \
@@ -2434,8 +2435,9 @@ stamps/rt.stamp: stamps/rt-class-files.stamp
 	     mkdir -p `dirname $$destpath` ; \
 	     cp -a ../../$$dirs $$destpath ; \
 	   done ; \
-	   $(ZIP) -qur $(STAGE1_BOOT_DIR)/jre/lib/rt.jar \
-	     com java javax sun ); \
+	   if [ -w $(STAGE1_BOOT_RUNTIME) ] ; then \
+	     $(ZIP) -qur $(STAGE1_BOOT_RUNTIME) com java javax sun ; \
+	   fi ; ) \
 	fi
 	mkdir -p stamps
 	touch $@
@@ -2445,7 +2447,8 @@ clean-rt:
 	rm -f stamps/rt-class-files.stamp stamps/rt.stamp
 	rm -f rt-source-files.txt
 	if [ -e $(STAGE1_BOOT_DIR)/jre/lib ] ; then \
-	  cp $(SYSTEM_JDK_DIR)/jre/lib/rt.jar $(STAGE1_BOOT_DIR)/jre/lib ; \
+	  cp $(SYSTEM_JDK_DIR)/jre/lib/rt.jar $(STAGE1_BOOT_RUNTIME) ; \
+	  chmod u+w $(STAGE1_BOOT_RUNTIME) ; \
 	fi
 
 # Target Aliases

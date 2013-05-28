@@ -16,6 +16,7 @@ New in release 2.3.10 (2013-06-XX):
   - PR1378: Add AArch64 support to Zero
 * Bug fixes
   - PR1409: IcedTea 2.3.9 fails to build Zero due to -Werror
+  - PR1410: Icedtea 2.3.9 fails to build using icedtea 1.12.4
 
 New in release 2.3.9 (2013-04-21):
 
