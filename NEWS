@@ -119,7 +119,7 @@ New in release 2.3.10 (2013-06-XX):
   - S7144833: sun/tools/jcmd/jcmd-Defaults.sh failing intermittently
   - S7144861: speed up RMI activation tests
   - S7147408: [macosx] Add autodelay to fix a regression test
-  - S7151434: java -jar -XX crashes java launcher
+  - S7151434, RH969884: java -jar -XX crashes java launcher
   - S7152183: TEST_BUG: java/lang/ProcessBuilder/Basic.java failing intermittently [sol]
   - S7152796: TEST_BUG: java/net/Socks/SocksV4Test.java does not terminate
   - S7152856: TEST_BUG: sun/net/www/protocol/jar/B4957695.java failing on Windows
@@ -209,7 +209,7 @@ New in release 2.3.10 (2013-06-XX):
   - S8014205: Most of the Swing dialogs are blank on one win7 MUI
   - S8014423: [macosx] The scrollbar's block increment performs incorrectly
   - S8014427: REGRESSION: closed/javax/imageio/plugins/bmp/Write3ByteBgrTest.java fails since 7u25 b09
-  - S8014618: Need to strip leading zeros in TlsPremasterSecret of DHKeyAgreement
+  - S8014618, RH868136: Need to strip leading zeros in TlsPremasterSecret of DHKeyAgreement
   - S8014676: Java debugger may fail to run
   - S8014718: Netbeans IDE begins to throw a lot exceptions since 7u25 b10
   - S8014745: Provide a switch to allow stack walk search of resource bundle

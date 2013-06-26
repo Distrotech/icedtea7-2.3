@@ -1,5 +1,9 @@
 2013-06-25  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: Add Red Hat bugzilla references.
+
+2013-06-25  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* NEWS: Add latest security fixes and other
 	changes brought in when syncing with 7u25.
 
