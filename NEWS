@@ -424,7 +424,6 @@ New in release 2.3.3 (2012-10-17):
   - S7195919, CVE-2012-5079: (sl) ServiceLoader can throw CCE without needing to create instance
   - S7196190, CVE-2012-5088: Improve method of handling MethodHandles
   - S7198296, CVE-2012-5089: Refactor classloader usage
-  - S7158800: Improve storage of symbol tables
   - S7158801: Improve VM CompileOnly option
   - S7158804: Improve config file parsing
   - S7198606, CVE-2012-4416: Improve VM optimization
@@ -494,13 +493,11 @@ New in release 2.3 (2012-08-15):
   - S7027139: getFirstIndex() does not return the first index that has changed
   - S7027300: Unsynchronized HashMap access causes endless loop
   - S7043963: AWT workaround missing for Mutter.
-  - S7049339: AnyBlit is broken with non-rectangular clips.
   - S7063674: Wrong results from basic comparisons after calls to Long.bitCount(long)
   - S7071826: Avoid benign race condition in initialization of UUID
   - S7071907: JDK: Full Debug Symbols
   - S7074616: java.lang.management.ManagementFactory.getPlatformManagementInterfaces fails
   - S7074853: TransparentRuler demos Readme should mention the correct jar file name
-  - S7079902: Refine CORBA data models
   - S7080109: Dialog.show() lacks doPrivileged() to access system event queue
   - S7087428: move client tests out of jdk_misc
   - S7090832: Some locale info are not localized for some languages.
@@ -578,12 +575,7 @@ New in release 2.3 (2012-08-15):
   - S7142641: -Xshared:on fails on ARM
   - S7142847: TEST_BUG: java/nio/file/WatchService/SensitivityModifier.java has incorrect @run tag, runs Basic
   - S7143353: -Xrunhprof fails in Java 7 due to bad switch
-  - S7143606: File.createTempFile should be improved for temporary files created by the platform.
-  - S7143614: SynthLookAndFeel stability improvement
-  - S7143617: Improve fontmanager layout lookup operations
   - S7143744: (se) Stabilize KQueue SelectorProvider and make default on MacOSX
-  - S7143851: Improve IIOP stub and tie generation in RMIC
-  - S7143872: Improve certificate extension processing
   - S7144063: [macosx] Swing JMenu mnemonic doesn't work; hint misleading; cross symbol typed
   - S7144086: TEST_BUG: java/nio/file/WatchService/SensitivityModifier.java failing intermittently
   - S7144328: Improper commandlines for -XX:+-UnlockCommercialFeatures require proper warning/error messages
@@ -650,7 +642,6 @@ New in release 2.3 (2012-08-15):
   - S7152690: Initialization error with charset SJIS_0213 when security manager is enabled
   - S7152784: new hotspot build - hs23-b19
   - S7152800: All tests using the attach API fail with "well-known file is not secure" on Mac OS X
-  - S7152811: Issues in client compiler
   - S7152952: [macosx] List rows overlap with enlarged font
   - S7152954: G1: Native memory leak during full GCs
   - S7153184: NullPointerException when calling SSLEngineImpl.getSupportedCipherSuites
@@ -670,14 +661,10 @@ New in release 2.3 (2012-08-15):
   - S7154516: [macosx] Popup menus have no visible borders
   - S7154677: new hotspot build - hs23-b20
   - S7154724: jdk7u4 test properties missing from jprt.properties
-  - S7154758: NLS: 7u4 message drop 20
-  - S7154770: NLS: 7u4 man page update
   - S7154809: JDI: update JDI/JDB debugee commandline option parsing
   - S7154822: forward port fix for Bug 13645891 to JDK8 jcmd (1024 byte file size limit issue)
   - S7155051: DNS provider may return incorrect results
-  - S7155419: Remove reference to JRockit and commercial features from java man page
   - S7155453: [macosx] re-enable jbb tests in JPRT
-  - S7155757: make jdk7u4 the default jprt release for hs23
   - S7156000: Change makefile to reflect refactored classes
   - S7156191: [macosx] Can't type into applet demos in Pivot
   - S7156194: [macosx] Can't type non-ASCII characters into applets
@@ -691,7 +678,6 @@ New in release 2.3 (2012-08-15):
   - S7157296: FDS: ENABLE_FULL_DEBUG_SYMBOLS flag should only affect OPT builds
   - S7157365: jruby/bench.bench_timeout crashes with JVM internal error
   - S7157608: One feature is not recognized.
-  - S7157609: Issues with loop
   - S7157610: NullPointerException occurs when parsing XML doc
   - S7157659: [macosx] Landscape Printing orientation doesn't work
   - S7157855: jvisualvm.1 not included in binaries
@@ -713,8 +699,6 @@ New in release 2.3 (2012-08-15):
   - S7160293: [macosx] FileDialog appears on secondary display
   - S7160539: JDeveloper crashes on 64-bit Windows
   - S7160623: [macosx] Editable TextArea/TextField are blocking GUI applications from exit
-  - S7160677: missing else in fix for 7152811
-  - S7160757: Problem with hotspot/runtime_classfile
   - S7160895: tools/launcher/VersionCheck.java attempts to launch .debuginfo
   - S7161105: unused classes in jdk7u repository
   - S7161766: [macosx] javax/swing/JPopupMenu/6694823/bug6694823.java failed on Mac OS X
@@ -734,7 +718,6 @@ New in release 2.3 (2012-08-15):
   - S7165060: dtrace tests fail with FDS debug info files
   - S7165257: Add JFR tests to the JDK code base
   - S7165598: enable FDS on Solaris X64 when 7165593 is fixed
-  - S7165628: Issues with java.lang.invoke.MethodHandles.Lookup
   - S7165725: JAVA6 HTML PARSER CANNOT PARSE MULTIPLE SCRIPT TAGS IN A LINE CORRECTLY
   - S7165755: OS Information much longer on linux than other platforms
   - S7166437: [macosx] Support for Window.Type.UTILITY on the Mac
@@ -974,7 +957,6 @@ New in release 2.2 (2012-05-30):
   - S7030453: JSR 292 ClassValue.get method is too slow
   - S7033170: Cipher.getMaxAllowedKeyLength(String) throws NoSuchAlgorithmException
   - S7045132: sun.security.util.Resources_pt_BR.java translation error
-  - S7045232: G1: pool names are inconsistent with other collectors (don't have 'Space')
   - S7046238: new InitialContext(); hangs
   - S7046929: tools/javac/api/T6397104.java fails
   - S7047200: keytool safe store
@@ -986,7 +968,6 @@ New in release 2.2 (2012-05-30):
   - S7054590: (JSR-292) MethodHandleProxies.asInterfaceInstance() accepts private/protected nested interfaces
   - S7057935: com/sun/nio/sctp tests should be moved out of jdk_nio and into their own target, jdk_sctp
   - S7058133: Javah should use the freshly built classes instead of those from the BOOTDIR jdk
-  - S7059019: G1: add G1 support to the SA
   - S7059039: EA: don't change non-escaping state of NULL pointer
   - S7059047: EA: can't find initializing store with several CheckCastPP
   - S7059899: Stack overflows in Java code cause 64-bit JVMs to exit due to SIGSEGV
@@ -1017,7 +998,7 @@ New in release 2.2 (2012-05-30):
   - S7081933: Use zeroing elimination optimization for large array
   - S7081938: JSR292: assert(magic_number_2() == MAGIC_NUMBER_2) failed
   - S7082294: nsk/regression/b4265661 crashes on windows
-  - S7082299: AtomicReferenceArray should ensure that array is Object[]
+  - S7082299: 
   - S7082443: JComboBox not backward compatible (with Java 6)
   - S7082553: Interpret Thread.setPriority(Thread.MAX_PRIORITY) to mean FX60 on Solaris 10 and 11
   - S7083621: Add fontconfig file for OEL6 and rename RH/O EL 5 file so that it is picked up for all 5.x updates
@@ -1028,7 +1009,6 @@ New in release 2.2 (2012-05-30):
   - S7086595: Error message bug: name of initializer is 'null'
   - S7086601: Error message bug: cause for method mismatch is 'null'
   - S7087727: JSR 292: C2 crash if ScavengeRootsInCode=2 when "static final" MethodHandle constants are in use
-  - S7088367: JavaSound security issue (12865443)
   - S7088680: G1: Cleanup in the G1CollectorPolicy class
   - S7088989: Improve the performance for T4 by utilizing the newly provided crypto APIs
   - S7089790: integrate bsd-port changes
@@ -1157,7 +1137,6 @@ New in release 2.2 (2012-05-30):
   - S7110440: closed/javax/swing/JScrollBar/4865918/bug4865918.java fails on Aqua L&F
   - S7110489: C1: 64-bit tiered with ForceUnreachable: assert(reachable(src)) failed: Address should be reachable
   - S7110586: C2 generates incorrect results
-  - S7110700: Enhance exception throwing mechanism in ObjectStreamClass
   - S7110718: -XX:MarkSweepAlwaysCompactCount=0 crashes the JVM
   - S7110815: closed/javax/swing/JSplitPane/4885629/bug4885629.java unstable on MacOS
   - S7110824: ctw/jarfiles/GUI3rdParty_jar/ob_mask_DateField crashes VM
@@ -1171,7 +1150,6 @@ New in release 2.2 (2012-05-30):
   - S7112308: Fix Visual Studio build for precompiled header
   - S7112413: JVM Crash, possibly GC-related
   - S7112478: after 7105605 JRuby bench_define_method_methods.rb fails with NPE
-  - S7112642: Incorrect checking for graphics rendering object
   - S7112743: G1: Reduce overhead of marking closure during evacuation pauses
   - S7112854: [macosx] closed/javax/swing/JPopupMenu/Test6827786.java unstable on MacOS
   - S7112925: closed/javax/swing/JTabbedPane/4624207/bug4624207.java fails on MacOS
@@ -1217,7 +1195,6 @@ New in release 2.2 (2012-05-30):
   - S7118095: Add macosx targets to make/jprt.properties file
   - S7118202: G1: eden size unnecessarily drops to a minimum
   - S7118280: The gbyc00102 JCK7 test causes an assert in JVM 7.0 fastdebug mode
-  - S7118283: Better input parameter checking in zip file processing
   - S7118648: disable compressed oops by default on MacOS X until 7118647 is fixed
   - S7118773: Fix jdk/test/makefile so it works on the mac
   - S7118809: rcache deadlock
@@ -1349,7 +1326,6 @@ New in release 2.2 (2012-05-30):
   - S7126732: MAC: Require Mac OS X builds/tests for JPRT integrate jobs for HotSpot
   - S7126832: com.sun.tools.javac.api.ClientCodeWrapper$WrappedJavaFileManager cannot be cast
   - S7126889: Incorrect SSLEngine debug output
-  - S7126960: Add property to limit number of request headers to the HTTP Server
   - S7126979: (props) JCK test java_lang/System/GetProperties.java failing [macosx]
   - S7126993: JCK test api/java_util/jar/Jarfile jarFile0129 failing [macosx]
   - S7127032: fix for 7122253 adds a JvmtiThreadState earlier than necessary
@@ -1582,7 +1558,7 @@ New in release 2.2 (2012-05-30):
 New in release 2.1 (2012-02-14):
 
 * Security fixes
-  - S7082299, CVE-2011-3571: Fix in AtomicReferenceArray
+  - S7082299, CVE-2011-3571: AtomicReferenceArray should ensure that array is Object[]
   - S7088367, CVE-2011-3563: Fix issues in java sound
   - S7110683, CVE-2012-0502: Issues with some KeyboardFocusManager method
   - S7110687, CVE-2012-0503: Issues with TimeZone class
@@ -1698,7 +1674,6 @@ New in release 2.1 (2012-02-14):
   - S7057297: Project Coin: diamond erroneously accepts in array initializer expressions
   - S7057459: Regression:  Performance degradation with java.beans.XMLEncoder
   - S7057705: can't generate api docs for JDK7 updates
-  - S7057857, CVE-2011-3554: insufficient pack200 JAR files uncompress error checks
   - S7057857: SIGSEGV [libunpack.so] store_Utf8_char(signed char*, unsigned short) in java.util.jar.pack200
   - S7057978: improve robustness of c1 ARM back-end wrt non encodable constants
   - S7058036: FieldsAllocationStyle=2 does not work in 32-bit VM
@@ -1901,7 +1876,7 @@ New in release 2.1 (2012-02-14):
 New in release 2.0.1 (2012-02-14):
 
 * Security fixes
-  - S7082299, CVE-2011-3571: Fix in AtomicReferenceArray
+  - S7082299, CVE-2011-3571: AtomicReferenceArray should ensure that array is Object[]
   - S7088367, CVE-2011-3563: Fix issues in java sound
   - S7110683, CVE-2012-0502: Issues with some KeyboardFocusManager method
   - S7110687, CVE-2012-0503: Issues with TimeZone class
