@@ -362,6 +362,20 @@ diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleN
              return defc == java.util.logging.Logger.class;
          }
          return false;
+@@ -528,10 +528,10 @@
+     private static boolean canBeCalledVirtual(MemberName mem) {
+         assert(mem.isInvocable());
+         Class<?> defc = mem.getDeclaringClass();
+-        switch (mem.getName()) {
+-        case "checkMemberAccess":
++	String memName = mem.getName();
++	if ("checkMemberAccess".equals(memName)) {
+             return canBeCalledVirtual(mem, java.lang.SecurityManager.class);
+-        case "getContextClassLoader":
++        } else if ("getContextClassLoader".equals(memName)) {
+             return canBeCalledVirtual(mem, java.lang.Thread.class);
+         }
+         return false;
 diff -Nru openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java
 --- openjdk-boot.orig/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java	2013-06-21 21:46:14.000000000 +0100
 +++ openjdk-boot/jdk/src/share/classes/java/lang/invoke/MethodHandleProxies.java	2013-06-25 21:52:46.711944282 +0100

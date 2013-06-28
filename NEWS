@@ -26,7 +26,7 @@ New in release 2.3.10 (2013-06-XX):
   - S8001308: Update display of applet windows
   - S8001309: Better handling of annotation interfaces
   - S8001318, CVE-2013-2447: Socket.getLocalAddress not consistent with InetAddress.getLocalHost
-  - S8001330, CVE-2013-2443: Improve on checking order
+  - S8001330, CVE-2013-2443: Improve on checking order (non-Zero builds only)
   - S8003703, CVE-2013-2412: Update RMI connection dialog box
   - S8004288, CVE-2013-2449: (fs) Files.probeContentType problems
   - S8004584: Augment applet contextualization

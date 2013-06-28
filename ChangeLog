@@ -1,3 +1,12 @@
+2013-06-28  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* NEWS: Mention that 8001330 is not in Zero.
+	* hotspot.map: Update Zero to 2.1.9.
+	* patches/boot/ecj-diamond.patch,
+	* patches/boot/ecj-multicatch.patch,
+	* patches/boot/ecj-stringswitch.patch:
+	Add new cases.
+
 2013-06-25  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* NEWS: Cleanup security issue duplication.
