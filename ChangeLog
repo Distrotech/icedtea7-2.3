@@ -1,5 +1,15 @@
 2013-06-28  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* acinclude.m4:
+	(IT_WITH_HOTSPOT_BUILD): Define once.
+	(IT_CHECK_FOR_LCMS): Turn system LCMS off by default
+	and warn if enabled as it is unlikely to have
+	the new security fixes.
+	* configure.ac: Drop IT_ENABLE_ZERO_BUILD; called
+	by IT_WITH_HOTSPOT_BUILD.
+
+2013-06-28  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* NEWS: Mention that 8001330 is not in Zero.
 	* hotspot.map: Update Zero to 2.1.9.
 	* patches/boot/ecj-diamond.patch,

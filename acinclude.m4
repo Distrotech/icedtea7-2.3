@@ -921,7 +921,7 @@ AC_DEFUN([IT_WITH_GCJ],
   AC_SUBST([GCJ])
 ])
 
-AC_DEFUN([IT_WITH_HOTSPOT_BUILD],
+AC_DEFUN_ONCE([IT_WITH_HOTSPOT_BUILD],
 [
   AC_REQUIRE([IT_ENABLE_ZERO_BUILD])
   if test "x${use_zero}" = "xyes"; then
@@ -1912,15 +1912,16 @@ AC_DEFUN_ONCE([IT_CHECK_FOR_LCMS],
 [
   AC_MSG_CHECKING([whether to use the system LCMS install])
   AC_ARG_ENABLE([system-lcms],
-	      [AS_HELP_STRING(--enable-system-lcms,use the system LCMS [[default=yes]])],
+	      [AS_HELP_STRING(--enable-system-lcms,use the system LCMS [[default=no]])],
   [
     ENABLE_SYSTEM_LCMS="${enableval}"
   ],
   [
-    ENABLE_SYSTEM_LCMS="yes"
+    ENABLE_SYSTEM_LCMS="no"
   ])
   AC_MSG_RESULT(${ENABLE_SYSTEM_LCMS})
   if test x"${ENABLE_SYSTEM_LCMS}" = "xyes"; then
+    AC_MSG_WARN([System LCMS may not have the latest security updates])
     dnl Check for LCMS2 headers and libraries.
     PKG_CHECK_MODULES(LCMS2, lcms2,[LCMS2_FOUND=yes],[LCMS2_FOUND=no])
     if test "x${LCMS2_FOUND}" = xno
