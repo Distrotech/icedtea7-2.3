@@ -1,5 +1,10 @@
 2013-06-28  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* configure.ac: Set to 2.3.10.
+	* NEWS: Set release date.
+
+2013-06-28  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* acinclude.m4:
 	(IT_WITH_HOTSPOT_BUILD): Define once.
 	(IT_CHECK_FOR_LCMS): Turn system LCMS off by default
