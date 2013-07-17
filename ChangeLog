@@ -1,3 +1,41 @@
+2013-07-17  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* patches/boot/ecj-opts.patch,
+	* patches/boot/hotspot/zero/jdk-dependency.patch,
+	* patches/cacao/arm-arch-defines.patch,
+	* patches/hotspot/zero/6924259-string_offset.patch,
+	* patches/hotspot/zero/7089790-bsd_port.patch,
+	* patches/hotspot/zero/7098194-macosx_port.patch,
+	* patches/hotspot/zero/7116189-setnativethreadname.patch,
+	* patches/hotspot/zero/7175133-string_offset.patch,
+	* patches/hotspot/zero/revert-7017193.patch,
+	* patches/hotspot/zero/revert_arm_debug.patch:
+	Removed unused patches.
+	* patches/boot/hotspot-jdk-dependency.patch: Renamed from
+	patches/boot/hotspot/default/jdk-dependency.patch
+	* patches/revert-7017193.patch: Renamed from
+	patches/hotspot/default/revert-7017193.patch
+	* Makefile.am:
+	(CORBA_CHANGESET): Update to IcedTea 2.3 HEAD.
+	(JAXP_CHANGESET): Likewise.
+	(JAXWS_CHANGESET): Likewise.
+	(JDK_CHANGESET): Likewise.
+	(LANGTOOLS_CHANGESET): Likewise.
+	(OPENJDK_CHANGESET): Likewise.
+	(CORBA_SHA256SUM): Likewise.
+	(JAXP_SHA256SUM): Likewise.
+	(JAXWS_SHA256SUM): Likewise.
+	(JDK_SHA256SUM): Likewise.
+	(LANGTOOLS_SHA256SUM): Likewise.
+	(OPENJDK_SHA256SUM): Likewise.
+	(ICEDTEA_PATCHES): Remove Zero-specific patches
+	and use of $(HSBUILD).
+	* acinclude.m4:
+	(IT_WITH_HOTSPOT_BUILD): No longer default to "zero"
+	HotSpot if Zero is requested.
+	* hotspot.map: Update default to IcedTea 2.3 HotSpot
+	HEAD.  Remove zero.
+
 2013-06-28  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* configure.ac: Bump to 2.3.11pre.

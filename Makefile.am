@@ -4,19 +4,19 @@ OPENJDK_VERSION = b30
 JDK_UPDATE_VERSION = 25
 COMBINED_VERSION = $(JDK_UPDATE_VERSION)-$(OPENJDK_VERSION)
 
-CORBA_CHANGESET = 8e581b671511
-JAXP_CHANGESET = 1a02956fcfaf
-JAXWS_CHANGESET = c0e829bfbf62
-JDK_CHANGESET = bd392c168d5c
-LANGTOOLS_CHANGESET = 8cf15d334ad3
-OPENJDK_CHANGESET = fb1ac57ada6c
+CORBA_CHANGESET = eda3895cb67e
+JAXP_CHANGESET = 181faea8867b
+JAXWS_CHANGESET = 5dc89903bfc7
+JDK_CHANGESET = 0a482b2f7c35
+LANGTOOLS_CHANGESET = e2c5f493844a
+OPENJDK_CHANGESET = f143f229bd12
 
-CORBA_SHA256SUM = 510ca43bc0d208f4cbbe716a1652871f63491f37b3e3902610a42d2e1870fd6c
-JAXP_SHA256SUM = acfd7789f0745a79306d339bbc55ad9d05c08b49b5058e7a804323cdced258fe
-JAXWS_SHA256SUM = 014d6f206b628d3d532c98420b8ebc6434c446497a55037aae6bc3535a858892
-JDK_SHA256SUM = f6c7d86b1b3cebb1f26f3d2735a3b7466b31d9c9e56950e4f24c6c1da436247c
-LANGTOOLS_SHA256SUM = e28ff622e407a915c31ba90d8056b3e08d051c9cd6c107c52b0ef4e246adcd23
-OPENJDK_SHA256SUM = 09fd1d517ed890924e580dd50af7d41e2f137668120e24eca4a7d887648f2335
+CORBA_SHA256SUM = 7e1201261a38b588c1e87224c3480602b5eedd5d821d7c6cb41fdcf1271c2201
+JAXP_SHA256SUM = 71309e488b91266008c8573a32933f66502ddc10e31f808cb8f5fc04caa30f84
+JAXWS_SHA256SUM = 6fac4c4f6afd4ea61d2926987f24f0661f34c71e8947dd86340a0081c2988703
+JDK_SHA256SUM = c24a265ca703e32e742496447f95a49648f49a5577b0fb097865bed32a698032
+LANGTOOLS_SHA256SUM = e964e25b137d5c8a145df60b7cfee67538417191f9f6dd3c59dfe388a40c3b6f
+OPENJDK_SHA256SUM = 80b1aba00ebd6ea0abc0b857ec7fc86c99a7b476d93c78dd35518034ce85956f
 
 CACAO_VERSION = a567bcb7f589
 CACAO_SHA256SUM = d49f79debc131a5694cae6ab3ba2864e7f3249ee8d9dc09aae8afdd4dc6b09f9
@@ -265,18 +265,9 @@ REWRITER_SRCS = $(top_srcdir)/rewriter/com/redhat/rewriter/ClassRewriter.java
 # Patch list
 
 ICEDTEA_PATCHES = \
-	patches/hotspot/$(HSBUILD)/revert-7017193.patch
+	patches/revert-7017193.patch
 
 # Conditional patches
-
-if WITH_ALT_HSBUILD
-ICEDTEA_PATCHES += \
-	patches/hotspot/$(HSBUILD)/7089790-bsd_port.patch \
-	patches/hotspot/$(HSBUILD)/7098194-macosx_port.patch \
-	patches/hotspot/$(HSBUILD)/7116189-setnativethreadname.patch \
-	patches/hotspot/$(HSBUILD)/6924259-string_offset.patch \
-	patches/hotspot/$(HSBUILD)/revert_arm_debug.patch
-endif
 
 if WITH_RHINO
 ICEDTEA_PATCHES += \
@@ -358,7 +349,7 @@ ICEDTEA_BOOT_PATCHES = \
 	patches/boot/corba-dependencies.patch \
 	patches/boot/jaxws-langtools-dependency.patch \
 	patches/boot/jaxws-jdk-dependency.patch \
-	patches/boot/hotspot/${HSBUILD}/jdk-dependency.patch \
+	patches/boot/hotspot-jdk-dependency.patch \
 	patches/boot/ecj-multicatch.patch \
 	patches/boot/ecj-trywithresources.patch \
 	patches/boot/ecj-autoboxing.patch \
