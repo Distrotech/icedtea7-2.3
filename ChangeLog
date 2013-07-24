@@ -1,3 +1,7 @@
+2013-07-24  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* NEWS: List ARM port changes.
+
 2013-07-17  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* patches/boot/ecj-opts.patch,

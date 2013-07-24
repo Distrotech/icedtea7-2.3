@@ -12,6 +12,32 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.11 (2013-XX-XX):
 
+* ARM Port
+  - Add arm_port from IcedTea 6
+  - Add patches/arm.patch from IcedTea 6
+  - Add patches/arm-debug.patch from IcedTea 6
+  - Add patches/arm-hsdis.patch from IcedTea 6
+  - Added jvmti event generation for dynamic_generate and compiled_method_load events to ARM JIT compiler
+  - Adjust saved SP when safepointing.
+  - First cut of invokedynamic
+  - Fix trashed thread ptr after recursive re-entry from asm JIT.
+  - JIT-compilation of ldc methodHandle
+  - Rename a bunch of misleadingly-named functions
+  - Changes for HSX22
+  - Changes for HSX23
+  - Corrected call from fast_method_handle_entry to CppInterpreter::method_handle_entry so that thread is loaded into r2
+  - Don't save locals at a return.
+  - Fix call to handle_special_method().  Fix compareAndSwapLong.
+  - Fix JIT bug that miscompiles org.eclipse.ui.internal.contexts.ContextAuthority.sourceChanged
+  - invokedynamic and aldc for JIT
+  - Modified safepoint check to rely on memory protect signal instead of polling
+  - PR1188: ASM Interpreter and Thumb2 JIT javac miscompile modulo reminder on armel
+  - PR1363: Fedora 19 / rawhide FTBFS SIGILL
+  - Remove C++ flags from CC_COMPILE and fix usage in zeroshark.make.
+  - RTC Thumb2 JIT enhancements.
+  - Use ldrexd for atomic reads on ARMv7.
+  - Use unified syntax for thumb code.
+
 New in release 2.3.10 (2013-06-28):
 
 * Security fixes
