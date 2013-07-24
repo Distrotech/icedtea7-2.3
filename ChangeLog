@@ -1,5 +1,11 @@
 2013-07-24  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* Makefile.am:
+	(EXTRA_DIST): Remove search for HotSpot-specific
+	patches which no longer exist.
+
+2013-07-24  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* NEWS: Set release date.
 	* configure.ac: Set version to 2.3.11.
 
