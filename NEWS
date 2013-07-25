@@ -12,6 +12,7 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.11 (2013-07-24):
 
+* System LCMS 2 support again enabled by default, requiring 2.5 or above.
 * ARM Port
   - Add arm_port from IcedTea 6
   - Add patches/arm.patch from IcedTea 6
