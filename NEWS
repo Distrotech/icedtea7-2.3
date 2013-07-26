@@ -10,6 +10,8 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
+New in release 2.3.12 (2013-XX-XX):
+
 New in release 2.3.11 (2013-07-24):
 
 * System LCMS 2 support again enabled by default, requiring 2.5 or above.
