@@ -1,5 +1,10 @@
 2013-07-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: Set release date.
+	* configure.ac: Set version to 2.3.12.
+
+2013-07-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* Makefile.am:
 	(CORBA_CHANGESET): Update to IcedTea 2.3.12 tag.
 	(JAXP_CHANGESET): Likewise.

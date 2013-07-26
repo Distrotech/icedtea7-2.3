@@ -10,7 +10,7 @@ LPX - https://bugs.launchpad.net/bugs/X
 
 CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
-New in release 2.3.12 (2013-XX-XX):
+New in release 2.3.12 (2013-07-26):
 
 * ARM Port
   - Set Zero flags for ARM32 in jdk_generic_profile.sh
