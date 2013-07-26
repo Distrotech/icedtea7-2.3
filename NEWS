@@ -12,6 +12,12 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.12 (2013-XX-XX):
 
+* ARM Port
+  - Set Zero flags for ARM32 in jdk_generic_profile.sh
+  - Tell gcc explicitly that the bytecodes_arm.def input from stdin is C++, allowing C++ flags to be used.
+  - Use $(CC) as before for bytecodes_arm.s and mkoffsets targets
+  - Include $(CFLAGS) in assembler stage
+
 New in release 2.3.11 (2013-07-24):
 
 * System LCMS 2 support again enabled by default, requiring 2.5 or above.
