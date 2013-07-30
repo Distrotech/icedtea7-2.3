@@ -1,3 +1,8 @@
+2013-07-29  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* configure.ac: Bump to 2.3.13pre.
+	* NEWS: Add section for 2.3.13.
+
 2013-07-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* NEWS: Set release date.
