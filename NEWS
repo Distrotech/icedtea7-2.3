@@ -12,11 +12,58 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.13 (2013-XX-XX):
 
+* Security fixes
+  - S6727821: Enhance JAAS Configuration
+  - S7068126, CVE-2014-0373: Enhance SNMP statuses
+  - S8010935: Better XML handling
+  - S8011786, CVE-2014-0368: Better applet networking
+  - S8021257, S8025022, CVE-2013-5896 : com.sun.corba.se.** should be on restricted package list
+  - S8021271, S8021266, CVE-2014-0408: Better buffering in ObjC code
+  - S8022904: Enhance JDBC Parsers
+  - S8022927: Input validation for byte/endian conversions
+  - S8022935: Enhance Apache resolver classes
+  - S8022945: Enhance JNDI implementation classes
+  - S8023057: Enhance start up image display
+  - S8023069, CVE-2014-0411: Enhance TLS connections
+  - S8023245, CVE-2014-0423: Enhance Beans decoding
+  - S8023301: Enhance generic classes
+  - S8023338: Update jarsigner to encourage timestamping
+  - S8023672: Enhance jar file validation
+  - S8024302: Clarify jar verifications
+  - S8024306, CVE-2014-0416: Enhance Subject consistency
+  - S8024530: Enhance font process resilience
+  - S8024867: Enhance logging start up
+  - S8025014: Enhance Security Policy
+  - S8025018, CVE-2014-0376: Enhance JAX-P set up
+  - S8025026, CVE-2013-5878: Enhance canonicalization
+  - S8025034, CVE-2013-5907: Improve layout lookups
+  - S8025448: Enhance listening events
+  - S8025758, CVE-2014-0422: Enhance Naming management
+  - S8025767, CVE-2014-0428: Enhance IIOP Streams
+  - S8026172: Enhance UI Management
+  - S8026176: Enhance document printing
+  - S8026193, CVE-2013-5884: Enhance CORBA stub factories
+  - S8026204: Enhance auth login contexts
+  - S8026417, CVE-2013-5910: Enhance XML canonicalization
+  - S8027201, CVE-2014-0376: Enhance JAX-P set up
 * Backports
+  - S7173959: Jvm crashed during coherence exabus (tmb) testin
+  - S7182152: Instrumentation hot swap test incorrect monitor count
+  - S8009399: Bump the hsx build number for APRIL CPU
+  - S8014312: Fork hs23.25 hsx from hs23.21 for jdk7u25 and reinitialize build number
   - S8014925: Disable sun.reflect.Reflection.getCallerClass(int) with a temporary switch to re-enable it
+  - S8015614: Update build settings
+  - S8016256: Make finalization final
   - S8016814: sun.reflect.Reflection.getCallerClass returns the frame off by 1
+  - S8020943: Memory leak when GCNotifier uses create_from_platform_dependent_str()
+  - S8023457: Event based tracing framework needs a mutex for thread groups
+  - S8023478: Test fails with HS crash in GCNotifier.
+  - S8023683: Enhance class file parsing
+  - S8024914: Swapped usage of idx_t and bm_word_t types in bitMap.inline.hpp
+  - S8026826: JDK 7 fix for 8010935 broke the build
 * Bug fixes
   - Enable Zero when there is no HotSpot JIT and an alternate VM has not been explictly enabled.
+  - PR1551: Add build support for Zero AArch64
 
 New in release 2.3.12 (2013-07-26):
 
