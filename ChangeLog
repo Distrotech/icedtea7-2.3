@@ -1,5 +1,10 @@
 2014-01-14  Omair Majid <omajid@redhat.com>
 
+	* NEWS: Update with date.
+	* configure.ac: Set version.
+
+2014-01-14  Omair Majid <omajid@redhat.com>
+
 	* Makefile.am
 	(CORBA_CHANGESET): Update to IcedTea 2.3.13.
 	(JAXP_CHANGESET): Likewise.
