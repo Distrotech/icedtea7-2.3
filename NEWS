@@ -56,6 +56,8 @@ New in release 2.3.13 (2014-01-14):
   - S8019292: Better Attribute Value Exceptions
   - S8019617: Better view of objects
   - S8020293: JVM crash
+  - S8021257, CVE-2013-5896: com.sun.corba.se.** should be on restricted package list
+  - S8021271, CVE-2014-0408: Better buffering in ObjC code
   - S8021275, CVE-2013-5805: Better screening for ScreenMenu
   - S8021282, CVE-2013-5806: Better recycling of object instances
   - S8021286: Improve MacOS resourcing
@@ -128,8 +130,6 @@ New in release 2.3.13 (2014-01-14):
   - S8020085: Linux ARM build failure for 7u45
   - S8020943: Memory leak when GCNotifier uses create_from_platform_dependent_str()
   - S8020983: OutOfMemoryError caused by non garbage collected JPEGImageWriter Instances
-  - S8021257: com.sun.corba.se.** should be on restricted package list
-  - S8021271: Better buffering in ObjC code
   - S8021355: REGRESSION: Five closed/java/awt/SplashScreen tests fail since 7u45 b01 on Linux, Solaris
   - S8021360: object not exported" on start of JMXConnectorServer for RMI-IIOP protocol with security manager
   - S8021366: java_util/Properties/PropertiesWithOtherEncodings fails during 7u45 nightly testing
