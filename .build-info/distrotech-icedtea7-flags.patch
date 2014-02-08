@@ -5,9 +5,9 @@ diff -ur a/openjdk/jdk/make/common/shared/Defs-linux.gmk b/openjdk/jdk/make/comm
  # Definitions for Linux.
  #
  
-+#Flags added by distrotech to handle X11R7 and other bits
++#Flags added by distrotech to handle Xorg in /opt/Xorg and other bits
 +OTHER_CFLAGS   =       -I=/usr/include/glib-2.0 -I=/usr/include/PCSC -I=/usr/include/gtk-2.0 \
-+                       -I=/usr/include/cairo -I=/usr/include/freetype2 -I=/usr/X11R7/include -I=/usr/X11R7/include/X11/extensions
++                       -I=/usr/include/cairo -I=/usr/include/freetype2 -I=/opt/Xorg/include -I=/opt/Xorg/include/X11/extensions
 +OTHER_CPPFLAGS =       $(OTHER_CFLAGS)
 +
  # Default for COMPILER_WARNINGS_FATAL on Linux (C & C++ compiler warnings)
