@@ -1,0 +1,1045 @@
+# HG changeset patch
+# User twisti
+# Date 1391807860 0
+#      Fri Feb 07 21:17:40 2014 +0000
+# Node ID a66016d23db17dbe4b8d54b1680f732a116e0a4c
+# Parent  38ae397aa523096aa3f94d23e1a38aa75e55f8f5
+7200949: JSR 292: rubybench/bench/time/bench_base64.rb fails with jruby.jar not on boot class path
+Reviewed-by: jrose, kvn
+
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciClassList.hpp
+--- openjdk/hotspot/src/share/vm/ci/ciClassList.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciClassList.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -49,6 +49,7 @@
+ class     ciCallSite;
+ class     ciMemberName;
+ class     ciMethodHandle;
++class     ciMethodType;
+ class   ciMethod;
+ class   ciMethodData;
+ class     ciReceiverTypeData;  // part of ciMethodData
+@@ -105,6 +106,7 @@
+ friend class ciMethod;                 \
+ friend class ciMethodData;             \
+ friend class ciMethodHandle;           \
++friend class ciMethodType;             \
+ friend class ciReceiverTypeData;       \
+ friend class ciSymbol;                 \
+ friend class ciArray;                  \
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciMethodType.hpp
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciMethodType.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -0,0 +1,76 @@
++/*
++ * Copyright (c) 2012, Oracle and/or its affiliates. All rights reserved.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
++ *
++ * This code is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 only, as
++ * published by the Free Software Foundation.
++ *
++ * This code is distributed in the hope that it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ * version 2 for more details (a copy is included in the LICENSE file that
++ * accompanied this code).
++ *
++ * You should have received a copy of the GNU General Public License version
++ * 2 along with this work; if not, write to the Free Software Foundation,
++ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
++ *
++ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
++ * or visit www.oracle.com if you need additional information or have any
++ * questions.
++ *
++ */
++
++#ifndef SHARE_VM_CI_CIMETHODTYPE_HPP
++#define SHARE_VM_CI_CIMETHODTYPE_HPP
++
++#include "ci/ciInstance.hpp"
++#include "ci/ciUtilities.hpp"
++#include "classfile/javaClasses.hpp"
++
++// ciMethodType
++//
++// The class represents a java.lang.invoke.MethodType object.
++class ciMethodType : public ciInstance {
++private:
++  ciType* class_to_citype(oop klass_oop) const {
++    if (java_lang_Class::is_primitive(klass_oop)) {
++      BasicType bt = java_lang_Class::primitive_type(klass_oop);
++      return ciType::make(bt);
++    } else {
++      klassOop k = java_lang_Class::as_klassOop(klass_oop);
++      return CURRENT_ENV->get_object(k)->as_klass();
++    }
++  }
++
++public:
++  ciMethodType(instanceHandle h_i) : ciInstance(h_i) {}
++
++  // What kind of ciObject is this?
++  bool is_method_type() const { return true; }
++
++  ciType* rtype() const {
++    GUARDED_VM_ENTRY(
++      oop rtype = java_lang_invoke_MethodType::rtype(get_oop());
++      return class_to_citype(rtype);
++    )
++  }
++
++  int ptype_count() const {
++    GUARDED_VM_ENTRY(return java_lang_invoke_MethodType::ptype_count(get_oop());)
++  }
++
++  int ptype_slot_count() const {
++    GUARDED_VM_ENTRY(return java_lang_invoke_MethodType::ptype_slot_count(get_oop());)
++  }
++
++  ciType* ptype_at(int index) const {
++    GUARDED_VM_ENTRY(
++      oop ptype = java_lang_invoke_MethodType::ptype(get_oop(), index);
++      return class_to_citype(ptype);
++    )
++  }
++};
++
++#endif // SHARE_VM_CI_CIMETHODTYPE_HPP
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciObject.hpp
+--- openjdk/hotspot/src/share/vm/ci/ciObject.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciObject.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -146,6 +146,7 @@
+   virtual bool is_method()                  { return false; }
+   virtual bool is_method_data()             { return false; }
+   virtual bool is_method_handle()     const { return false; }
++  virtual bool is_method_type()       const { return false; }
+   virtual bool is_array()                   { return false; }
+   virtual bool is_obj_array()               { return false; }
+   virtual bool is_type_array()              { return false; }
+@@ -193,103 +194,107 @@
+   }
+ 
+   // Subclass casting with assertions.
+-  ciNullObject*            as_null_object() {
++  ciNullObject* as_null_object() {
+     assert(is_null_object(), "bad cast");
+     return (ciNullObject*)this;
+   }
+-  ciCallSite*              as_call_site() {
++  ciCallSite* as_call_site() {
+     assert(is_call_site(), "bad cast");
+-    return (ciCallSite*) this;
++    return (ciCallSite*)this;
+   }
+-  ciCPCache*               as_cpcache() {
++  ciCPCache* as_cpcache() {
+     assert(is_cpcache(), "bad cast");
+-    return (ciCPCache*) this;
++    return (ciCPCache*)this;
+   }
+-  ciInstance*              as_instance() {
++  ciInstance* as_instance() {
+     assert(is_instance(), "bad cast");
+     return (ciInstance*)this;
+   }
+-  ciMemberName*            as_member_name() {
++  ciMemberName* as_member_name() {
+     assert(is_member_name(), "bad cast");
+     return (ciMemberName*)this;
+   }
+-  ciMethod*                as_method() {
++  ciMethod* as_method() {
+     assert(is_method(), "bad cast");
+     return (ciMethod*)this;
+   }
+-  ciMethodData*            as_method_data() {
++  ciMethodData* as_method_data() {
+     assert(is_method_data(), "bad cast");
+     return (ciMethodData*)this;
+   }
+-  ciMethodHandle*          as_method_handle() {
++  ciMethodHandle* as_method_handle() {
+     assert(is_method_handle(), "bad cast");
+-    return (ciMethodHandle*) this;
++    return (ciMethodHandle*)this;
+   }
+-  ciArray*                 as_array() {
++  ciMethodType* as_method_type() {
++    assert(is_method_type(), "bad cast");
++    return (ciMethodType*)this;
++  }
++  ciArray* as_array() {
+     assert(is_array(), "bad cast");
+     return (ciArray*)this;
+   }
+-  ciObjArray*              as_obj_array() {
++  ciObjArray* as_obj_array() {
+     assert(is_obj_array(), "bad cast");
+     return (ciObjArray*)this;
+   }
+-  ciTypeArray*             as_type_array() {
++  ciTypeArray* as_type_array() {
+     assert(is_type_array(), "bad cast");
+     return (ciTypeArray*)this;
+   }
+-  ciSymbol*                as_symbol() {
++  ciSymbol* as_symbol() {
+     assert(is_symbol(), "bad cast");
+     return (ciSymbol*)this;
+   }
+-  ciType*                  as_type() {
++  ciType* as_type() {
+     assert(is_type(), "bad cast");
+     return (ciType*)this;
+   }
+-  ciReturnAddress*         as_return_address() {
++  ciReturnAddress* as_return_address() {
+     assert(is_return_address(), "bad cast");
+     return (ciReturnAddress*)this;
+   }
+-  ciKlass*                 as_klass() {
++  ciKlass* as_klass() {
+     assert(is_klass(), "bad cast");
+     return (ciKlass*)this;
+   }
+-  ciInstanceKlass*         as_instance_klass() {
++  ciInstanceKlass* as_instance_klass() {
+     assert(is_instance_klass(), "bad cast");
+     return (ciInstanceKlass*)this;
+   }
+-  ciMethodKlass*           as_method_klass() {
++  ciMethodKlass* as_method_klass() {
+     assert(is_method_klass(), "bad cast");
+     return (ciMethodKlass*)this;
+   }
+-  ciArrayKlass*            as_array_klass() {
++  ciArrayKlass* as_array_klass() {
+     assert(is_array_klass(), "bad cast");
+     return (ciArrayKlass*)this;
+   }
+-  ciObjArrayKlass*         as_obj_array_klass() {
++  ciObjArrayKlass* as_obj_array_klass() {
+     assert(is_obj_array_klass(), "bad cast");
+     return (ciObjArrayKlass*)this;
+   }
+-  ciTypeArrayKlass*        as_type_array_klass() {
++  ciTypeArrayKlass* as_type_array_klass() {
+     assert(is_type_array_klass(), "bad cast");
+     return (ciTypeArrayKlass*)this;
+   }
+-  ciKlassKlass*            as_klass_klass() {
++  ciKlassKlass* as_klass_klass() {
+     assert(is_klass_klass(), "bad cast");
+     return (ciKlassKlass*)this;
+   }
+-  ciInstanceKlassKlass*    as_instance_klass_klass() {
++  ciInstanceKlassKlass* as_instance_klass_klass() {
+     assert(is_instance_klass_klass(), "bad cast");
+     return (ciInstanceKlassKlass*)this;
+   }
+-  ciArrayKlassKlass*       as_array_klass_klass() {
++  ciArrayKlassKlass* as_array_klass_klass() {
+     assert(is_array_klass_klass(), "bad cast");
+     return (ciArrayKlassKlass*)this;
+   }
+-  ciObjArrayKlassKlass*    as_obj_array_klass_klass() {
++  ciObjArrayKlassKlass* as_obj_array_klass_klass() {
+     assert(is_obj_array_klass_klass(), "bad cast");
+     return (ciObjArrayKlassKlass*)this;
+   }
+-  ciTypeArrayKlassKlass*   as_type_array_klass_klass() {
++  ciTypeArrayKlassKlass* as_type_array_klass_klass() {
+     assert(is_type_array_klass_klass(), "bad cast");
+     return (ciTypeArrayKlassKlass*)this;
+   }
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciObjectFactory.cpp
+--- openjdk/hotspot/src/share/vm/ci/ciObjectFactory.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciObjectFactory.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -32,6 +32,7 @@
+ #include "ci/ciMethod.hpp"
+ #include "ci/ciMethodData.hpp"
+ #include "ci/ciMethodHandle.hpp"
++#include "ci/ciMethodType.hpp"
+ #include "ci/ciMethodKlass.hpp"
+ #include "ci/ciNullObject.hpp"
+ #include "ci/ciObjArray.hpp"
+@@ -349,6 +350,8 @@
+       return new (arena()) ciMemberName(h_i);
+     else if (java_lang_invoke_MethodHandle::is_instance(o))
+       return new (arena()) ciMethodHandle(h_i);
++    else if (java_lang_invoke_MethodType::is_instance(o))
++      return new (arena()) ciMethodType(h_i);
+     else
+       return new (arena()) ciInstance(h_i);
+   } else if (o->is_objArray()) {
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciSignature.cpp
+--- openjdk/hotspot/src/share/vm/ci/ciSignature.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciSignature.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -23,6 +23,7 @@
+  */
+ 
+ #include "precompiled.hpp"
++#include "ci/ciMethodType.hpp"
+ #include "ci/ciSignature.hpp"
+ #include "ci/ciUtilities.hpp"
+ #include "memory/allocation.inline.hpp"
+@@ -80,6 +81,24 @@
+ }
+ 
+ // ------------------------------------------------------------------
++// ciSignature::ciSignature
++ciSignature::ciSignature(ciKlass* accessing_klass, ciSymbol* symbol, ciMethodType* method_type) :
++  _symbol(symbol),
++  _accessing_klass(accessing_klass),
++  _size( method_type->ptype_slot_count()),
++  _count(method_type->ptype_count())
++{
++  ASSERT_IN_VM;
++  EXCEPTION_CONTEXT;
++  Arena* arena = CURRENT_ENV->arena();
++  _types = new (arena) GrowableArray<ciType*>(arena, _count + 1, 0, NULL);
++  for (int i = 0; i < _count; i++) {
++    _types->append(method_type->ptype_at(i));
++  }
++  _types->append(method_type->rtype());
++}
++
++// ------------------------------------------------------------------
+ // ciSignature::return_type
+ //
+ // What is the return type of this signature?
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciSignature.hpp
+--- openjdk/hotspot/src/share/vm/ci/ciSignature.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciSignature.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -47,6 +47,7 @@
+   friend class ciObjectFactory;
+ 
+   ciSignature(ciKlass* accessing_klass, constantPoolHandle cpool, ciSymbol* signature);
++  ciSignature(ciKlass* accessing_klass,                           ciSymbol* signature, ciMethodType* method_type);
+ 
+   void get_all_klasses();
+ 
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciStreams.cpp
+--- openjdk/hotspot/src/share/vm/ci/ciStreams.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciStreams.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -363,12 +363,15 @@
+   constantPoolHandle cpool(_method->get_methodOop()->constants());
+   ciMethod* m = env->get_method_by_index(cpool, get_method_index(), cur_bc(), _holder);
+   will_link = m->is_loaded();
+-  // Get declared method signature and return it.
+-  if (has_optional_appendix()) {
+-    const int sig_index = get_method_signature_index();
+-    Symbol* sig_sym = cpool->symbol_at(sig_index);
+-    ciKlass* pool_holder = env->get_object(cpool->pool_holder())->as_klass();
+-    (*declared_signature_result) = new (env->arena()) ciSignature(pool_holder, cpool, env->get_symbol(sig_sym));
++
++  // Use the MethodType stored in the CP cache to create a signature
++  // with correct types (in respect to class loaders).
++  if (has_method_type()) {
++    ciSymbol*     sig_sym     = env->get_symbol(cpool->symbol_at(get_method_signature_index()));
++    ciKlass*      pool_holder = env->get_object(cpool->pool_holder())->as_klass();
++    ciMethodType* method_type = get_method_type();
++    ciSignature* declared_signature = new (env->arena()) ciSignature(pool_holder, sig_sym, method_type);
++    (*declared_signature_result) = declared_signature;
+   } else {
+     (*declared_signature_result) = m->signature();
+   }
+@@ -399,6 +402,31 @@
+ }
+ 
+ // ------------------------------------------------------------------
++// ciBytecodeStream::has_method_type
++//
++// Returns true if there is a MethodType argument stored in the
++// constant pool cache at the current bci.
++bool ciBytecodeStream::has_method_type() {
++  GUARDED_VM_ENTRY(
++    constantPoolHandle cpool(_method->get_methodOop()->constants());
++    return constantPoolOopDesc::has_method_type_at_if_loaded(cpool, get_method_index());
++  )
++}
++
++// ------------------------------------------------------------------
++// ciBytecodeStream::get_method_type
++//
++// Return the MethodType stored in the constant pool cache at
++// the current bci.
++ciMethodType* ciBytecodeStream::get_method_type() {
++  GUARDED_VM_ENTRY(
++    constantPoolHandle cpool(_method->get_methodOop()->constants());
++    oop method_type_oop = constantPoolOopDesc::method_type_at_if_loaded(cpool, get_method_index());
++    return CURRENT_ENV->get_object(method_type_oop)->as_method_type();
++  )
++}
++
++// ------------------------------------------------------------------
+ // ciBytecodeStream::get_declared_method_holder
+ //
+ // Get the declared holder of the currently referenced method.
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/ci/ciStreams.hpp
+--- openjdk/hotspot/src/share/vm/ci/ciStreams.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/ci/ciStreams.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -259,12 +259,14 @@
+   int      get_field_holder_index();
+   int      get_field_signature_index();
+ 
+-  ciMethod* get_method(bool& will_link, ciSignature* *declared_signature_result);
+-  bool      has_appendix();
+-  ciObject* get_appendix();
+-  ciKlass*  get_declared_method_holder();
+-  int       get_method_holder_index();
+-  int       get_method_signature_index();
++  ciMethod*     get_method(bool& will_link, ciSignature* *declared_signature_result);
++  bool          has_appendix();
++  ciObject*     get_appendix();
++  bool          has_method_type();
++  ciMethodType* get_method_type();
++  ciKlass*      get_declared_method_holder();
++  int           get_method_holder_index();
++  int           get_method_signature_index();
+ 
+   ciCPCache*  get_cpcache() const;
+   ciCallSite* get_call_site();
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/classfile/systemDictionary.cpp
+--- openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -2432,7 +2432,8 @@
+ methodHandle SystemDictionary::find_method_handle_invoker(Symbol* name,
+                                                           Symbol* signature,
+                                                           KlassHandle accessing_klass,
+-                                                          Handle* appendix_result,
++                                                          Handle *appendix_result,
++                                                          Handle *method_type_result,
+                                                           TRAPS) {
+   methodHandle empty;
+   assert(EnableInvokeDynamic, "");
+@@ -2464,6 +2465,7 @@
+                          vmSymbols::linkMethod_signature(),
+                          &args, CHECK_(empty));
+   Handle mname(THREAD, (oop) result.get_jobject());
++  (*method_type_result) = method_type;
+   return unpack_method_and_appendix(mname, appendix_box, appendix_result, THREAD);
+ }
+ 
+@@ -2610,7 +2612,8 @@
+                                                               Handle bootstrap_specifier,
+                                                               Symbol* name,
+                                                               Symbol* type,
+-                                                              Handle* appendix_result,
++                                                              Handle *appendix_result,
++                                                              Handle *method_type_result,
+                                                               TRAPS) {
+   methodHandle empty;
+   Handle bsm, info;
+@@ -2653,6 +2656,7 @@
+                          vmSymbols::linkCallSite_signature(),
+                          &args, CHECK_(empty));
+   Handle mname(THREAD, (oop) result.get_jobject());
++  (*method_type_result) = method_type;
+   return unpack_method_and_appendix(mname, appendix_box, appendix_result, THREAD);
+ }
+ 
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/classfile/systemDictionary.hpp
+--- openjdk/hotspot/src/share/vm/classfile/systemDictionary.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/classfile/systemDictionary.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -488,6 +488,7 @@
+                                                  Symbol* signature,
+                                                  KlassHandle accessing_klass,
+                                                  Handle *appendix_result,
++                                                 Handle *method_type_result,
+                                                  TRAPS);
+   // for a given signature, find the internal MethodHandle method (linkTo* or invokeBasic)
+   // (does not ask Java, since this is a low-level intrinsic defined by the JVM)
+@@ -514,6 +515,7 @@
+                                                      Symbol* name,
+                                                      Symbol* type,
+                                                      Handle *appendix_result,
++                                                     Handle *method_type_result,
+                                                      TRAPS);
+ 
+   // Utility for printing loader "name" as part of tracing constraints
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/interpreter/bytecodeInterpreter.cpp
+--- openjdk/hotspot/src/share/vm/interpreter/bytecodeInterpreter.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/interpreter/bytecodeInterpreter.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -2216,12 +2216,11 @@
+         methodOop method = cache->f1_as_method();
+         VERIFY_OOP(method);
+ 
+-	/** Re-enabled in 7200949
+         if (cache->has_appendix()) {
+           constantPoolOop constants = METHOD->constants();
+           SET_STACK_OBJECT(cache->appendix_if_resolved(constants), 0);
+           MORE_STACK(1);
+-	  } **/
++	}
+ 
+         istate->set_msg(call_method);
+         istate->set_callee(method);
+@@ -2249,12 +2248,11 @@
+ 
+         VERIFY_OOP(method);
+ 
+-	/** Re-enabled in 7200949
+         if (cache->has_appendix()) {
+           constantPoolOop constants = METHOD->constants();
+           SET_STACK_OBJECT(cache->appendix_if_resolved(constants), 0);
+           MORE_STACK(1);
+-	  } **/
++	}
+ 
+         istate->set_msg(call_method);
+         istate->set_callee(method);
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/interpreter/interpreterRuntime.cpp
+--- openjdk/hotspot/src/share/vm/interpreter/interpreterRuntime.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/interpreter/interpreterRuntime.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -764,7 +764,8 @@
+   cache_entry(thread)->set_method_handle(
+       pool,
+       info.resolved_method(),
+-      info.resolved_appendix());
++      info.resolved_appendix(),
++      info.resolved_method_type());
+ }
+ IRT_END
+ 
+@@ -791,7 +792,8 @@
+   pool->cache()->secondary_entry_at(index)->set_dynamic_call(
+       pool,
+       info.resolved_method(),
+-      info.resolved_appendix());
++      info.resolved_appendix(),
++      info.resolved_method_type());
+ }
+ IRT_END
+ 
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/interpreter/linkResolver.cpp
+--- openjdk/hotspot/src/share/vm/interpreter/linkResolver.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/interpreter/linkResolver.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -99,7 +99,7 @@
+   assert(!resolved_method->is_compiled_lambda_form(), "these must be handled via an invokehandle call");
+ }
+ 
+-void CallInfo::set_handle(methodHandle resolved_method, Handle resolved_appendix, TRAPS) {
++void CallInfo::set_handle(methodHandle resolved_method, Handle resolved_appendix, Handle resolved_method_type, TRAPS) {
+   if (resolved_method.is_null()) {
+     THROW_MSG(vmSymbols::java_lang_InternalError(), "resolved method is null");
+   }
+@@ -110,7 +110,8 @@
+   int vtable_index = methodOopDesc::nonvirtual_vtable_index;
+   assert(resolved_method->vtable_index() == vtable_index, "");
+   set_common(resolved_klass, resolved_klass, resolved_method, resolved_method, vtable_index, CHECK);
+-  _resolved_appendix = resolved_appendix;
++  _resolved_appendix    = resolved_appendix;
++  _resolved_method_type = resolved_method_type;
+ }
+ 
+ void CallInfo::set_common(KlassHandle resolved_klass, KlassHandle selected_klass, methodHandle resolved_method, methodHandle selected_method, int vtable_index, TRAPS) {
+@@ -221,7 +222,8 @@
+ void LinkResolver::lookup_polymorphic_method(methodHandle& result,
+                                              KlassHandle klass, Symbol* name, Symbol* full_signature,
+                                              KlassHandle current_klass,
+-                                             Handle* appendix_result_or_null,
++                                             Handle *appendix_result_or_null,
++                                             Handle *method_type_result,
+                                              TRAPS) {
+   vmIntrinsics::ID iid = MethodHandles::signature_polymorphic_name_id(name);
+   if (TraceMethodHandles) {
+@@ -275,10 +277,12 @@
+       }
+ 
+       Handle appendix;
++      Handle method_type;
+       result = SystemDictionary::find_method_handle_invoker(name,
+                                                             full_signature,
+                                                             current_klass,
+                                                             &appendix,
++                                                            &method_type,
+                                                             CHECK);
+       if (TraceMethodHandles) {
+         tty->print("lookup_polymorphic_method => (via Java) ");
+@@ -307,6 +311,7 @@
+ 
+         assert(appendix_result_or_null != NULL, "");
+         (*appendix_result_or_null) = appendix;
++        (*method_type_result)      = method_type;
+         return;
+       }
+     }
+@@ -419,7 +424,7 @@
+     if (resolved_method.is_null()) {
+       // JSR 292:  see if this is an implicitly generated method MethodHandle.linkToVirtual(*...), etc
+       lookup_polymorphic_method(resolved_method, resolved_klass, method_name, method_signature,
+-                                current_klass, (Handle*)NULL, THREAD);
++                                current_klass, (Handle*)NULL, (Handle*)NULL, THREAD);
+       if (HAS_PENDING_EXCEPTION) {
+         nested_exception = Handle(THREAD, PENDING_EXCEPTION);
+         CLEAR_PENDING_EXCEPTION;
+@@ -1207,11 +1212,12 @@
+   assert(resolved_klass() == SystemDictionary::MethodHandle_klass(), "");
+   assert(MethodHandles::is_signature_polymorphic_name(method_name), "");
+   methodHandle resolved_method;
+-  Handle resolved_appendix;
++  Handle       resolved_appendix;
++  Handle       resolved_method_type;
+   lookup_polymorphic_method(resolved_method, resolved_klass,
+                             method_name, method_signature,
+-                            current_klass, &resolved_appendix, CHECK);
+-  result.set_handle(resolved_method, resolved_appendix, CHECK);
++                            current_klass, &resolved_appendix, &resolved_method_type, CHECK);
++  result.set_handle(resolved_method, resolved_appendix, resolved_method_type, CHECK);
+ }
+ 
+ 
+@@ -1219,7 +1225,7 @@
+   assert(EnableInvokeDynamic, "");
+   pool->set_invokedynamic();    // mark header to flag active call sites
+ 
+-  //resolve_pool(<resolved_klass>, method_name,  method_signature, current_klass, pool, index, CHECK);
++  //resolve_pool(<resolved_klass>, method_name, method_signature, current_klass, pool, index, CHECK);
+   Symbol* method_name       = pool->name_ref_at(index);
+   Symbol* method_signature  = pool->signature_ref_at(index);
+   KlassHandle current_klass = KlassHandle(THREAD, pool->pool_holder());
+@@ -1236,9 +1242,10 @@
+     bootstrap_specifier = Handle(THREAD, bsm_info);
+   }
+   if (!cpce->is_f1_null()) {
+-    methodHandle method(THREAD, cpce->f2_as_vfinal_method());
+-    Handle appendix(THREAD, cpce->has_appendix() ? cpce->f1_appendix() : (oop)NULL);
+-    result.set_handle(method, appendix, CHECK);
++    methodHandle method(     THREAD, cpce->f2_as_vfinal_method());
++    Handle       appendix(   THREAD, cpce->appendix_if_resolved(pool));
++    Handle       method_type(THREAD, cpce->method_type_if_resolved(pool));
++    result.set_handle(method, appendix, method_type, CHECK);
+     return;
+   }
+ 
+@@ -1260,11 +1267,13 @@
+   // JSR 292:  this must resolve to an implicitly generated method MH.linkToCallSite(*...)
+   // The appendix argument is likely to be a freshly-created CallSite.
+   Handle       resolved_appendix;
++  Handle       resolved_method_type;
+   methodHandle resolved_method =
+     SystemDictionary::find_dynamic_call_site_invoker(current_klass,
+                                                      bootstrap_specifier,
+                                                      method_name, method_signature,
+                                                      &resolved_appendix,
++                                                     &resolved_method_type,
+                                                      CHECK);
+   if (HAS_PENDING_EXCEPTION) {
+     if (TraceMethodHandles) {
+@@ -1285,7 +1294,7 @@
+     THROW_MSG_CAUSE(vmSymbols::java_lang_BootstrapMethodError(),
+                     "BootstrapMethodError", nested_exception)
+   }
+-  result.set_handle(resolved_method, resolved_appendix, CHECK);
++  result.set_handle(resolved_method, resolved_appendix, resolved_method_type, CHECK);
+ }
+ 
+ //------------------------------------------------------------------------------------------------------------------------
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/interpreter/linkResolver.hpp
+--- openjdk/hotspot/src/share/vm/interpreter/linkResolver.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/interpreter/linkResolver.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -76,12 +76,13 @@
+   methodHandle _selected_method;        // dynamic (actual) target method
+   int          _vtable_index;           // vtable index of selected method
+   Handle       _resolved_appendix;      // extra argument in constant pool (if CPCE::has_appendix)
++  Handle       _resolved_method_type;   // MethodType (for invokedynamic and invokehandle call sites)
+ 
+-  void         set_static(   KlassHandle resolved_klass,                             methodHandle resolved_method                                                , TRAPS);
+-  void         set_interface(KlassHandle resolved_klass, KlassHandle selected_klass, methodHandle resolved_method, methodHandle selected_method                  , TRAPS);
+-  void         set_virtual(  KlassHandle resolved_klass, KlassHandle selected_klass, methodHandle resolved_method, methodHandle selected_method, int vtable_index, TRAPS);
+-  void         set_handle(                                                           methodHandle resolved_method,   Handle resolved_appendix,                     TRAPS);
+-  void         set_common(   KlassHandle resolved_klass, KlassHandle selected_klass, methodHandle resolved_method, methodHandle selected_method, int vtable_index, TRAPS);
++  void         set_static(   KlassHandle resolved_klass,                             methodHandle resolved_method                                                       , TRAPS);
++  void         set_interface(KlassHandle resolved_klass, KlassHandle selected_klass, methodHandle resolved_method, methodHandle selected_method                         , TRAPS);
++  void         set_virtual(  KlassHandle resolved_klass, KlassHandle selected_klass, methodHandle resolved_method, methodHandle selected_method, int vtable_index       , TRAPS);
++  void         set_handle(                                                           methodHandle resolved_method, Handle resolved_appendix, Handle resolved_method_type, TRAPS);
++  void         set_common(   KlassHandle resolved_klass, KlassHandle selected_klass, methodHandle resolved_method, methodHandle selected_method, int vtable_index       , TRAPS);
+ 
+   friend class LinkResolver;
+ 
+@@ -91,6 +92,7 @@
+   methodHandle resolved_method() const           { return _resolved_method; }
+   methodHandle selected_method() const           { return _selected_method; }
+   Handle       resolved_appendix() const         { return _resolved_appendix; }
++  Handle       resolved_method_type() const      { return _resolved_method_type; }
+ 
+   BasicType    result_type() const               { return selected_method()->result_type(); }
+   bool         has_vtable_index() const          { return _vtable_index >= 0; }
+@@ -113,7 +115,7 @@
+   static void lookup_instance_method_in_klasses (methodHandle& result, KlassHandle klass, Symbol* name, Symbol* signature, TRAPS);
+   static void lookup_method_in_interfaces       (methodHandle& result, KlassHandle klass, Symbol* name, Symbol* signature, TRAPS);
+   static void lookup_polymorphic_method         (methodHandle& result, KlassHandle klass, Symbol* name, Symbol* signature,
+-                                                 KlassHandle current_klass, Handle* appendix_result_or_null, TRAPS);
++                                                 KlassHandle current_klass, Handle *appendix_result_or_null, Handle *method_type_result, TRAPS);
+ 
+   static int vtable_index_of_miranda_method(KlassHandle klass, Symbol* name, Symbol* signature, TRAPS);
+ 
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/interpreter/rewriter.cpp
+--- openjdk/hotspot/src/share/vm/interpreter/rewriter.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/interpreter/rewriter.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -163,10 +163,14 @@
+       if (status == 0) {
+         if (_pool->klass_ref_at_noresolve(cp_index) == vmSymbols::java_lang_invoke_MethodHandle() &&
+             MethodHandles::is_signature_polymorphic_name(SystemDictionary::MethodHandle_klass(),
+-                                                         _pool->name_ref_at(cp_index)))
++                                                         _pool->name_ref_at(cp_index))) {
++          assert(has_cp_cache(cp_index), "should already have an entry");
++          int cpc  = maybe_add_cp_cache_entry(cp_index);  // should already have an entry
++          int cpc2 = add_secondary_cp_cache_entry(cpc);
+           status = +1;
+-        else
++        } else {
+           status = -1;
++        }
+         _method_handle_invokers[cp_index] = status;
+       }
+       // We use a special internal bytecode for such methods (if non-static).
+@@ -195,6 +199,10 @@
+     int cp_index = Bytes::get_Java_u2(p);
+     int cpc  = maybe_add_cp_cache_entry(cp_index);  // add lazily
+     int cpc2 = add_secondary_cp_cache_entry(cpc);
++    // The second secondary entry is required to store the MethodType and
++    // must be the next entry.
++    int cpc3 = add_secondary_cp_cache_entry(cpc);
++    assert(cpc2 + 1 == cpc3, err_msg_res("must be consecutive: %d + 1 == %d", cpc2, cpc3));
+ 
+     // Replace the trailing four bytes with a CPC index for the dynamic
+     // call site.  Unlike other CPC entries, there is one per bytecode,
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/oops/constantPoolOop.cpp
+--- openjdk/hotspot/src/share/vm/oops/constantPoolOop.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/oops/constantPoolOop.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -270,13 +270,7 @@
+                                                    int which) {
+   assert(!constantPoolCacheOopDesc::is_secondary_index(which), "no indy instruction here");
+   if (cpool->cache() == NULL)  return NULL;  // nothing to load yet
+-  int cache_index = get_cpcache_index(which);
+-  if (!(cache_index >= 0 && cache_index < cpool->cache()->length())) {
+-    if (PrintMiscellaneous && (Verbose||WizardMode)) {
+-      tty->print_cr("bad operand %d in:", which); cpool->print();
+-    }
+-    return NULL;
+-  }
++  int cache_index = decode_cpcache_index(which, true);
+   ConstantPoolCacheEntry* e = cpool->cache()->entry_at(cache_index);
+   return e->method_if_resolved(cpool);
+ }
+@@ -284,44 +278,33 @@
+ 
+ bool constantPoolOopDesc::has_appendix_at_if_loaded(constantPoolHandle cpool, int which) {
+   if (cpool->cache() == NULL)  return false;  // nothing to load yet
+-  // XXX Is there a simpler way to get to the secondary entry?
+-  ConstantPoolCacheEntry* e;
+-  if (constantPoolCacheOopDesc::is_secondary_index(which)) {
+-    e = cpool->cache()->secondary_entry_at(which);
+-  } else {
+-    int cache_index = get_cpcache_index(which);
+-    if (!(cache_index >= 0 && cache_index < cpool->cache()->length())) {
+-      if (PrintMiscellaneous && (Verbose||WizardMode)) {
+-        tty->print_cr("bad operand %d in:", which); cpool->print();
+-      }
+-      return false;
+-    }
+-    e = cpool->cache()->entry_at(cache_index);
+-  }
++  int cache_index = decode_cpcache_index(which, true);
++  ConstantPoolCacheEntry* e = cpool->cache()->entry_at(cache_index);
+   return e->has_appendix();
+ }
+ 
+ 
+ oop constantPoolOopDesc::appendix_at_if_loaded(constantPoolHandle cpool, int which) {
+   if (cpool->cache() == NULL)  return NULL;  // nothing to load yet
+-  // XXX Is there a simpler way to get to the secondary entry?
+-  ConstantPoolCacheEntry* e;
+-  if (constantPoolCacheOopDesc::is_secondary_index(which)) {
+-    e = cpool->cache()->secondary_entry_at(which);
+-  } else {
+-    int cache_index = get_cpcache_index(which);
+-    if (!(cache_index >= 0 && cache_index < cpool->cache()->length())) {
+-      if (PrintMiscellaneous && (Verbose||WizardMode)) {
+-        tty->print_cr("bad operand %d in:", which); cpool->print();
+-      }
+-      return NULL;
+-    }
+-    e = cpool->cache()->entry_at(cache_index);
+-  }
+-  if (!e->has_appendix()) {
+-    return NULL;
+-  }
+-  return e->f1_as_instance();
++  int cache_index = decode_cpcache_index(which, true);
++  ConstantPoolCacheEntry* e = cpool->cache()->entry_at(cache_index);
++  return e->appendix_if_resolved(cpool);
++}
++
++
++bool constantPoolOopDesc::has_method_type_at_if_loaded(constantPoolHandle cpool, int which) {
++  if (cpool->cache() == NULL)  return false;  // nothing to load yet
++  int cache_index = decode_cpcache_index(which, true);
++  ConstantPoolCacheEntry* e = cpool->cache()->entry_at(cache_index);
++  return e->has_method_type();
++}
++
++oop constantPoolOopDesc::method_type_at_if_loaded(constantPoolHandle cpool, int which) {
++  if (cpool->cache() == NULL)  return NULL;  // nothing to load yet
++  int cache_index = decode_cpcache_index(which, true);
++  ConstantPoolCacheEntry* e  = cpool->cache()->entry_at(cache_index);  // get next CPC entry
++  ConstantPoolCacheEntry* e2 = cpool->cache()->find_secondary_entry_for(e);
++  return e2->method_type_if_resolved(cpool);
+ }
+ 
+ 
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/oops/constantPoolOop.hpp
+--- openjdk/hotspot/src/share/vm/oops/constantPoolOop.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/oops/constantPoolOop.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -674,6 +674,8 @@
+   static methodOop       method_at_if_loaded      (constantPoolHandle this_oop, int which);
+   static bool      has_appendix_at_if_loaded      (constantPoolHandle this_oop, int which);
+   static oop           appendix_at_if_loaded      (constantPoolHandle this_oop, int which);
++  static bool   has_method_type_at_if_loaded      (constantPoolHandle this_oop, int which);
++  static oop        method_type_at_if_loaded      (constantPoolHandle this_oop, int which);
+   static klassOop         klass_at_if_loaded      (constantPoolHandle this_oop, int which);
+   static klassOop     klass_ref_at_if_loaded      (constantPoolHandle this_oop, int which);
+   // Same as above - but does LinkResolving.
+@@ -704,6 +706,12 @@
+ #endif //ASSERT
+ 
+   static int get_cpcache_index(int index) { return index - CPCACHE_INDEX_TAG; }
++  static int decode_cpcache_index(int raw_index, bool invokedynamic_ok = false) {
++    if (invokedynamic_ok && constantPoolCacheOopDesc::is_secondary_index(raw_index))
++      return constantPoolCacheOopDesc::decode_secondary_index(raw_index);
++    else
++      return get_cpcache_index(raw_index);
++  }
+ 
+  private:
+ 
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/oops/cpCacheOop.cpp
+--- openjdk/hotspot/src/share/vm/oops/cpCacheOop.cpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/oops/cpCacheOop.cpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -266,21 +266,23 @@
+ 
+ 
+ void ConstantPoolCacheEntry::set_method_handle(constantPoolHandle cpool,
+-                                               methodHandle adapter, Handle appendix) {
++                                               methodHandle adapter,
++                                               Handle appendix, Handle method_type) {
+   assert(!is_secondary_entry(), "");
+-  set_method_handle_common(cpool, Bytecodes::_invokehandle, adapter, appendix);
++  set_method_handle_common(cpool, Bytecodes::_invokehandle, adapter, appendix, method_type);
+ }
+ 
+ void ConstantPoolCacheEntry::set_dynamic_call(constantPoolHandle cpool,
+-                                              methodHandle adapter, Handle appendix) {
++                                              methodHandle adapter,
++                                              Handle appendix, Handle method_type) {
+   assert(is_secondary_entry(), "");
+-  set_method_handle_common(cpool, Bytecodes::_invokedynamic, adapter, appendix);
++  set_method_handle_common(cpool, Bytecodes::_invokedynamic, adapter, appendix, method_type);
+ }
+ 
+ void ConstantPoolCacheEntry::set_method_handle_common(constantPoolHandle cpool,
+                                                       Bytecodes::Code invoke_code,
+                                                       methodHandle adapter,
+-                                                      Handle appendix) {
++                                                      Handle appendix, Handle method_type) {
+   // NOTE: This CPCE can be the subject of data races.
+   // There are three words to update: flags, f2, f1 (in that order).
+   // Writers must store all other values before f1.
+@@ -296,23 +298,28 @@
+     return;
+   }
+ 
+-  bool has_appendix = appendix.not_null();
++  const bool has_appendix    = appendix.not_null();
++  const bool has_method_type = method_type.not_null();
++
+   if (!has_appendix) {
+     // The extra argument is not used, but we need a non-null value to signify linkage state.
+     // Set it to something benign that will never leak memory.
+     appendix = Universe::void_mirror();
+   }
+ 
++  // Write the flags.
+   set_method_flags(as_TosState(adapter->result_type()),
+-                   ((has_appendix ?  1 : 0) << has_appendix_shift) |
+-                   (                 1      << is_vfinal_shift)    |
+-                   (                 1      << is_final_shift),
++                   ((has_appendix    ? 1 : 0) << has_appendix_shift)    |
++                   ((has_method_type ? 1 : 0) << has_method_type_shift) |
++                   (                   1      << is_vfinal_shift)       |
++                   (                   1      << is_final_shift),
+                    adapter->size_of_parameters());
+ 
+   if (TraceInvokeDynamic) {
+-    tty->print_cr("set_method_handle bc=%d appendix="PTR_FORMAT"%s method="PTR_FORMAT" ",
++    tty->print_cr("set_method_handle bc=%d appendix="PTR_FORMAT"%s method_type="PTR_FORMAT"%s method="PTR_FORMAT" ",
+                   invoke_code,
+-                  (intptr_t)appendix(), (has_appendix ? "" : " (unused)"),
++                  (intptr_t)appendix(),    (has_appendix    ? "" : " (unused)"),
++                  (intptr_t)method_type(), (has_method_type ? "" : " (unused)"),
+                   (intptr_t)adapter());
+     adapter->print();
+     if (has_appendix)  appendix()->print();
+@@ -336,14 +343,31 @@
+   // The fact that String and List are involved is encoded in the MethodType in f1.
+   // This allows us to create fewer method oops, while keeping type safety.
+   //
++
+   set_f2_as_vfinal_method(adapter());
++
++  // Store MethodType, if any.
++  if (has_method_type) {
++    ConstantPoolCacheEntry* e2 = cpool->cache()->find_secondary_entry_for(this);
++
++    // Write the flags.
++    e2->set_method_flags(as_TosState(adapter->result_type()),
++                     ((has_method_type ? 1 : 0) << has_method_type_shift) |
++                     (                   1      << is_vfinal_shift)       |
++                     (                   1      << is_final_shift),
++                     adapter->size_of_parameters());
++    e2->release_set_f1(method_type());
++  }
++
+   assert(appendix.not_null(), "needed for linkage state");
+   release_set_f1(appendix());  // This must be the last one to set (see NOTE above)!
++
+   if (!is_secondary_entry()) {
+     // The interpreter assembly code does not check byte_2,
+     // but it is used by is_resolved, method_if_resolved, etc.
+     set_bytecode_2(invoke_code);
+   }
++
+   NOT_PRODUCT(verify(tty));
+   if (TraceInvokeDynamic) {
+     this->print(tty, 0);
+@@ -401,6 +425,20 @@
+ }
+ 
+ 
++oop ConstantPoolCacheEntry::appendix_if_resolved(constantPoolHandle cpool) {
++  if (is_f1_null() || !has_appendix())
++    return NULL;
++  return f1_appendix();
++}
++
++
++oop ConstantPoolCacheEntry::method_type_if_resolved(constantPoolHandle cpool) {
++  if (is_f1_null() || !has_method_type())
++    return NULL;
++  return f1_as_instance();
++}
++
++
+ class LocalOopClosure: public OopClosure {
+  private:
+   void (*_f)(oop*);
+diff -r 38ae397aa523 -r a66016d23db1 src/share/vm/oops/cpCacheOop.hpp
+--- openjdk/hotspot/src/share/vm/oops/cpCacheOop.hpp	Thu Feb 06 14:33:44 2014 +0000
++++ openjdk/hotspot/src/share/vm/oops/cpCacheOop.hpp	Fri Feb 07 21:17:40 2014 +0000
+@@ -167,10 +167,11 @@
+     tos_state_mask             = right_n_bits(tos_state_bits),
+     tos_state_shift            = BitsPerInt - tos_state_bits,  // see verify_tos_state_shift below
+     // misc. option bits; can be any bit position in [16..27]
+-    is_vfinal_shift            = 21,
+-    is_volatile_shift          = 22,
+-    is_final_shift             = 23,
+-    has_appendix_shift         = 24,
++    is_vfinal_shift            = 20,
++    is_volatile_shift          = 21,
++    is_final_shift             = 22,
++    has_appendix_shift         = 23,
++    has_method_type_shift      = 24,
+     is_forced_virtual_shift    = 25,
+     is_field_entry_shift       = 26,
+     // low order bits give field index (for FieldInfo) or method parameter size:
+@@ -224,13 +225,15 @@
+   void set_method_handle(
+     constantPoolHandle cpool,                    // holding constant pool (required for locking)
+     methodHandle method,                         // adapter for invokeExact, etc.
+-    Handle appendix                              // stored in f1; could be a java.lang.invoke.MethodType
++    Handle appendix,                             // stored in f1; could be a java.lang.invoke.MethodType
++    Handle method_type                           // stored in f1 (of secondary entry); is a java.lang.invoke.MethodType
+   );
+ 
+   void set_dynamic_call(
+     constantPoolHandle cpool,                    // holding constant pool (required for locking)
+     methodHandle method,                         // adapter for this call site
+-    Handle appendix                              // stored in f1; could be a java.lang.invoke.CallSite
++    Handle appendix,                             // stored in f1; could be a java.lang.invoke.CallSite
++    Handle method_type                           // stored in f1 (of secondary entry); is a java.lang.invoke.MethodType
+   );
+ 
+   // Common code for invokedynamic and MH invocations.
+@@ -252,10 +255,13 @@
+     constantPoolHandle cpool,                    // holding constant pool (required for locking)
+     Bytecodes::Code invoke_code,                 // _invokehandle or _invokedynamic
+     methodHandle adapter,                        // invoker method (f2)
+-    Handle appendix                              // appendix such as CallSite, MethodType, etc. (f1)
++    Handle appendix,                             // appendix such as CallSite, MethodType, etc. (f1)
++    Handle method_type                           // MethodType (f1 of secondary entry)
+   );
+ 
+-  methodOop method_if_resolved(constantPoolHandle cpool);
++  methodOop      method_if_resolved(constantPoolHandle cpool);
++  oop          appendix_if_resolved(constantPoolHandle cpool);
++  oop       method_type_if_resolved(constantPoolHandle cpool);
+ 
+   void set_parameter_size(int value);
+ 
+@@ -267,11 +273,11 @@
+       case Bytecodes::_getfield        :    // fall through
+       case Bytecodes::_invokespecial   :    // fall through
+       case Bytecodes::_invokestatic    :    // fall through
++      case Bytecodes::_invokehandle    :    // fall through
++      case Bytecodes::_invokedynamic   :    // fall through
+       case Bytecodes::_invokeinterface : return 1;
+       case Bytecodes::_putstatic       :    // fall through
+       case Bytecodes::_putfield        :    // fall through
+-      case Bytecodes::_invokehandle    :    // fall through
+-      case Bytecodes::_invokedynamic   :    // fall through
+       case Bytecodes::_invokevirtual   : return 2;
+       default                          : break;
+     }
+@@ -310,7 +316,8 @@
+   int  parameter_size() const                    { assert(is_method_entry(), ""); return (_flags & parameter_size_mask); }
+   bool is_volatile() const                       { return (_flags & (1 << is_volatile_shift))       != 0; }
+   bool is_final() const                          { return (_flags & (1 << is_final_shift))          != 0; }
+-  bool has_appendix() const                      { return (_flags & (1 << has_appendix_shift))     != 0; }
++  bool has_appendix() const                      { return (_flags & (1 << has_appendix_shift))      != 0; }
++  bool has_method_type() const                   { return (_flags & (1 << has_method_type_shift))   != 0; }
+   bool is_forced_virtual() const                 { return (_flags & (1 << is_forced_virtual_shift)) != 0; }
+   bool is_vfinal() const                         { return (_flags & (1 << is_vfinal_shift))         != 0; }
+   bool is_method_entry() const                   { return (_flags & (1 << is_field_entry_shift))    == 0; }
+@@ -446,6 +453,29 @@
+     return entry_at(primary_index);
+   }
+ 
++  int index_of(ConstantPoolCacheEntry* e) {
++    assert(base() <= e && e < base() + length(), "oob");
++    int cpc_index = (e - base());
++    assert(entry_at(cpc_index) == e, "sanity");
++    return cpc_index;
++  }
++  ConstantPoolCacheEntry* find_secondary_entry_for(ConstantPoolCacheEntry* e) {
++    const int cpc_index = index_of(e);
++    if (e->is_secondary_entry()) {
++      ConstantPoolCacheEntry* e2 = entry_at(cpc_index + 1);
++      assert(e->main_entry_index() == e2->main_entry_index(), "");
++      return e2;
++    } else {
++      for (int i = length() - 1; i >= 0; i--) {
++        ConstantPoolCacheEntry* e2 = entry_at(i);
++        if (cpc_index == e2->main_entry_index())
++          return e2;
++      }
++    }
++    fatal("no secondary entry found");
++    return NULL;
++  }
++
+   // Code generation
+   static ByteSize base_offset()                  { return in_ByteSize(sizeof(constantPoolCacheOopDesc)); }
+   static ByteSize entry_offset(int raw_index) {

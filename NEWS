@@ -12,6 +12,14 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 2.3.14 (2014-01-XX):
 
+* Security fixes
+  - S7023639, CVE-2013-5838: JSR 292 method handle invocation needs a fast path for compiled code (Zero only)
+  - S8029507, CVE-2013-5893: Enhance JVM method processing (Zero only)
+* Backports
+  - S7192406: JSR 292: C2 needs exact return type information for invokedynamic and invokehandle call sites (Zero only)
+  - S7196242: vm/mlvm/indy/stress/java/loopsAndThreads crashed (Zero only)
+  - S7200949: JSR 292: rubybench/bench/time/bench_base64.rb fails with jruby.jar not on boot class path (Zero only)
+  - S8000780: make Zero build and run with JDK8 (Zero only)
 * Bug fixes
   - PR1677: Update PaX support to detect running PaX kernel and use newer tools
 

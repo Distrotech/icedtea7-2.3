@@ -1,3 +1,16 @@
+2014-02-25  Andrew John Hughes  <gnu.andrew@redhat.com>
+
+	* Makefile.am:
+	(ICEDTEA_PATCHES): Add new patches for Zero builds only.
+	* NEWS: List new patches.
+	* patches/zero/7023639-8000780-jsr292_fast_path.patch,
+	* patches/zero/7192406-exact_return_type_info.patch,
+	* patches/zero/7196242-loopsandthreads_crashed.patch,
+	* patches/zero/7200949-jruby_fail.patch,
+	* patches/zero/8029507-jvm_method_processing.patch:
+	Backports of 7023639 and 8029507 security fixes for
+	Zero only, with required backports.
+
 2014-01-15  Andrew John Hughes  <gnu.andrew@redhat.com>
 
 	* patches/boot/ecj-multicatch.patch:

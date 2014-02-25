@@ -1,0 +1,124 @@
+# HG changeset patch
+# User twisti
+# Date 1347320242 25200
+#      Mon Sep 10 16:37:22 2012 -0700
+# Node ID 98f6e8bc55e8dbac329e3d871de88b2a7529ff6d
+# Parent  19ac51ce4be77e6895816f9823bce63a72392e89
+7196242: vm/mlvm/indy/stress/java/loopsAndThreads crashed
+Reviewed-by: jrose, coleenp, jmasa, kvn
+
+diff -r 19ac51ce4be7 -r 98f6e8bc55e8 src/share/vm/interpreter/interpreterRuntime.cpp
+--- openjdk/hotspot/src/share/vm/interpreter/interpreterRuntime.cpp	Thu Feb 06 14:24:53 2014 +0000
++++ openjdk/hotspot/src/share/vm/interpreter/interpreterRuntime.cpp	Mon Sep 10 16:37:22 2012 -0700
+@@ -762,6 +762,7 @@
+   } // end JvmtiHideSingleStepping
+ 
+   cache_entry(thread)->set_method_handle(
++      pool,
+       info.resolved_method(),
+       info.resolved_appendix());
+ }
+@@ -788,6 +789,7 @@
+   } // end JvmtiHideSingleStepping
+ 
+   pool->cache()->secondary_entry_at(index)->set_dynamic_call(
++      pool,
+       info.resolved_method(),
+       info.resolved_appendix());
+ }
+diff -r 19ac51ce4be7 -r 98f6e8bc55e8 src/share/vm/oops/cpCacheOop.cpp
+--- openjdk/hotspot/src/share/vm/oops/cpCacheOop.cpp	Thu Feb 06 14:24:53 2014 +0000
++++ openjdk/hotspot/src/share/vm/oops/cpCacheOop.cpp	Mon Sep 10 16:37:22 2012 -0700
+@@ -265,25 +265,36 @@
+ }
+ 
+ 
+-void ConstantPoolCacheEntry::set_method_handle(methodHandle adapter, Handle appendix) {
++void ConstantPoolCacheEntry::set_method_handle(constantPoolHandle cpool,
++                                               methodHandle adapter, Handle appendix) {
+   assert(!is_secondary_entry(), "");
+-  set_method_handle_common(Bytecodes::_invokehandle, adapter, appendix);
++  set_method_handle_common(cpool, Bytecodes::_invokehandle, adapter, appendix);
+ }
+ 
+-void ConstantPoolCacheEntry::set_dynamic_call(methodHandle adapter, Handle appendix) {
++void ConstantPoolCacheEntry::set_dynamic_call(constantPoolHandle cpool,
++                                              methodHandle adapter, Handle appendix) {
+   assert(is_secondary_entry(), "");
+-  set_method_handle_common(Bytecodes::_invokedynamic, adapter, appendix);
++  set_method_handle_common(cpool, Bytecodes::_invokedynamic, adapter, appendix);
+ }
+ 
+-void ConstantPoolCacheEntry::set_method_handle_common(Bytecodes::Code invoke_code, methodHandle adapter, Handle appendix) {
++void ConstantPoolCacheEntry::set_method_handle_common(constantPoolHandle cpool,
++                                                      Bytecodes::Code invoke_code,
++                                                      methodHandle adapter,
++                                                      Handle appendix) {
+   // NOTE: This CPCE can be the subject of data races.
+   // There are three words to update: flags, f2, f1 (in that order).
+   // Writers must store all other values before f1.
+   // Readers must test f1 first for non-null before reading other fields.
+-  // Competing writers must acquire exclusive access on the first
+-  // write, to flags, using a compare/exchange.
+-  // A losing writer must spin until the winner writes f1,
+-  // so that when he returns, he can use the linked cache entry.
++  // Competing writers must acquire exclusive access via a lock.
++  // A losing writer waits on the lock until the winner writes f1 and leaves
++  // the lock, so that when the losing writer returns, he can use the linked
++  // cache entry.
++
++  Thread* THREAD = Thread::current();
++  ObjectLocker ol(cpool, THREAD);
++  if (!is_f1_null()) {
++    return;
++  }
+ 
+   bool has_appendix = appendix.not_null();
+   if (!has_appendix) {
+@@ -292,20 +303,11 @@
+     appendix = Universe::void_mirror();
+   }
+ 
+-  bool owner =
+-    init_method_flags_atomic(as_TosState(adapter->result_type()),
++  set_method_flags(as_TosState(adapter->result_type()),
+                    ((has_appendix ?  1 : 0) << has_appendix_shift) |
+                    (                 1      << is_vfinal_shift)    |
+                    (                 1      << is_final_shift),
+                    adapter->size_of_parameters());
+-  if (!owner) {
+-    while (is_f1_null()) {
+-      // Pause momentarily on a low-level lock, to allow racing thread to win.
+-      MutexLockerEx mu(Patching_lock, Mutex::_no_safepoint_check_flag);
+-      os::yield();
+-    }
+-    return;
+-  }
+ 
+   if (TraceInvokeDynamic) {
+     tty->print_cr("set_method_handle bc=%d appendix="PTR_FORMAT"%s method="PTR_FORMAT" ",
+diff -r 19ac51ce4be7 -r 98f6e8bc55e8 src/share/vm/oops/cpCacheOop.hpp
+--- openjdk/hotspot/src/share/vm/oops/cpCacheOop.hpp	Thu Feb 06 14:24:53 2014 +0000
++++ openjdk/hotspot/src/share/vm/oops/cpCacheOop.hpp	Mon Sep 10 16:37:22 2012 -0700
+@@ -222,11 +222,13 @@
+   );
+ 
+   void set_method_handle(
++    constantPoolHandle cpool,                    // holding constant pool (required for locking)
+     methodHandle method,                         // adapter for invokeExact, etc.
+     Handle appendix                              // stored in f1; could be a java.lang.invoke.MethodType
+   );
+ 
+   void set_dynamic_call(
++    constantPoolHandle cpool,                    // holding constant pool (required for locking)
+     methodHandle method,                         // adapter for this call site
+     Handle appendix                              // stored in f1; could be a java.lang.invoke.CallSite
+   );
+@@ -247,6 +249,7 @@
+   // resolution logic needs to make slightly different assessments about the
+   // number and types of arguments.
+   void set_method_handle_common(
++    constantPoolHandle cpool,                    // holding constant pool (required for locking)
+     Bytecodes::Code invoke_code,                 // _invokehandle or _invokedynamic
+     methodHandle adapter,                        // invoker method (f2)
+     Handle appendix                              // appendix such as CallSite, MethodType, etc. (f1)

@@ -317,6 +317,15 @@ ICEDTEA_PATCHES += \
 	patches/pax-mark-rmic-java.patch
 endif
 
+if ZERO_BUILD
+ICEDTEA_PATCHES += \
+	patches/zero/7023639-8000780-jsr292_fast_path.patch \
+	patches/zero/7196242-loopsandthreads_crashed.patch \
+	patches/zero/7192406-exact_return_type_info.patch \
+	patches/zero/7200949-jruby_fail.patch \
+	patches/zero/8029507-jvm_method_processing.patch
+endif
+
 ICEDTEA_PATCHES += $(DISTRIBUTION_PATCHES)
 
 # Bootstrapping patches
