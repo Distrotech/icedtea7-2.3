@@ -602,6 +602,11 @@ ICEDTEA_ENV += \
 	COMPRESS_JARS="true"
 endif
 
+if WITH_PAX
+ICEDTEA_ENV += \
+	PAX_COMMAND="${PAX_COMMAND}"
+endif
+
 # OpenJDK boot build environment.
 ICEDTEA_ENV_BOOT = $(ICEDTEA_ENV) \
 	BOOTCLASSPATH_CLS_RT="-bootclasspath $(CLS_DIR_BOOT):$(RUNTIME)" \
