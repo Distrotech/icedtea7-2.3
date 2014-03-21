@@ -22,7 +22,7 @@ New in release 2.3.14 (2014-01-XX):
   - S8000780: make Zero build and run with JDK8 (Zero only)
 * Bug fixes
   - Fix broken bootstrap build by updating ecj-multicatch.patch
-  - PR1677: Update PaX support to detect running PaX kernel and use newer tools
+  - PR1677, G498288: Update PaX support to detect running PaX kernel and use newer tools
   - PR1684: Build fails with empty PAX_COMMAND
 
 New in release 2.3.13 (2014-01-14):
