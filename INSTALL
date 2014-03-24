@@ -195,6 +195,7 @@ These are documented fully in the relevant section below.
 * --with-rhino: Include Javascript support using Rhino (location may optionally be specified).
 * --with-additional-vms=vm-list: Additional VMs to build using the system described
   below.
+* --enable-arm32-jit: Build the ARM32 JIT.
 
 Testing
 =======
@@ -293,6 +294,10 @@ called Shark has been developed.  This performs Just-In-Time compilation
 on any architecture supported by LLVM.  To enable it, pass the option
 --enable-shark to configure.  Please note that Shark is still in
 development and builds are still likely to fail at present.
+
+On ARM32, there is also a native JIT port built on top of Zero. This
+still has issues and is thus not enabled by default. To enable it,
+pass --enable-arm32-jit to configure.
 
 Support for Different Versions of HotSpot
 =========================================

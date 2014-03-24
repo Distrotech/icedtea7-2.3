@@ -2494,3 +2494,25 @@ rmdir tmp.$$
 AM_CONDITIONAL([LACKS_$1], test x"${it_cv_$1}" = "xyes")
 AC_PROVIDE([$0])dnl
 ])
+
+AC_DEFUN([IT_ENABLE_ARM32JIT],
+[
+  AC_MSG_CHECKING([whether to enable the ARM32 JIT])
+  AC_ARG_ENABLE([arm32-jit],
+                [AS_HELP_STRING(--enable-arm32-jit,build with the ARM32 JIT [[default=no]])],
+  [
+    case "${enableval}" in
+      yes)
+        enable_arm32jit=yes
+        ;;
+      *)
+        enable_arm32jit=no
+        ;;
+    esac
+  ],
+  [
+    enable_arm32jit=yes
+  ])
+  AC_MSG_RESULT([$enable_arm32jit])
+  AM_CONDITIONAL([ENABLE_ARM32JIT], test x"${enable_arm32jit}" = "xyes")
+])

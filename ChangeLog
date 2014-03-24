@@ -1,3 +1,46 @@
+2014-03-24  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* patches/revert-7017193.patch:
+	Removed.
+	* patches/boot/ecj-diamond.patch: Remove unneeded
+	change to src/share/classes/java/beans/ThreadGroupContext.java
+	* Makefile.am:
+	(CORBA_CHANGESET): Update to icedtea-2.3 HEAD.
+	(JAXP_CHANGESET): Likewise.
+	(JAXWS_CHANGESET): Likewise.
+	(JDK_CHANGESET): Likewise.
+	(OPENJDK_CHANGESET): Likewise.
+	(CORBA_SHA256SUM): Likewise.
+	(JAXP_SHA256SUM): Likewise.
+	(JAXWS_SHA256SUM): Likewise.
+	(JDK_SHA256SUM): Likewise.
+	(OPENJDK_SHA256SUM): Likewise.
+	(ICEDTEA_PATCHES): Remove 7017193 reversion.
+	* NEWS: Updated with latest changes, including PaX
+	ARM32 and Shark changes.
+	* acinclude.m4:
+	(IT_ENABLE_ARM32JIT): Enable by default.
+	* hotspot.map: Update to icedtea-2.3 HEAD.
+
+2014-02-19  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
+	* patches/boot/test_gamma.patch,
+	* patches/pax-mark-rmic-java.patch,
+	* patches/test_gamma.patch:
+	Removed.
+	* INSTALL:
+	Document ARM32 JIT and --enable-arm32-jit option.
+	(ICEDTEA_PATCHES): Remove PaX patches.
+	(ICEDTEA_BOOT_PATCHES): Remove test_gamma
+	patch (fixed by detection of non-Oracle JDK
+	addition from PPC port)
+	(ARM32JIT_STATUS): Set based on ENABLE_ARM32JIT.
+	(ICEDTEA_ENV): Pass ARM32JIT to OpenJDK build.
+	* acinclude.m4:
+	(IT_ENABLE_ARM32JIT): Allow the ARM32 JIT to be
+	enabled.
+	* configure.ac: Run IT_ENABLE_ARM32JIT macro.
+
 2014-02-24  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
 	* NEWS: Add Gentoo bug reference for
