@@ -1,5 +1,10 @@
 2014-03-24  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: Updated.
+	* hotspot.map: Bring in S8035893 backport.
+
+2014-03-24  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* patches/revert-7017193.patch:
 	Removed.
 	* patches/boot/ecj-diamond.patch: Remove unneeded
