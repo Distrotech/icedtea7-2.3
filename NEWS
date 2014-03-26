@@ -53,6 +53,7 @@ New in release 2.3.14 (2014-03-26):
   - S8035893: JVM_GetVersionInfo fails to zero structure
 * Bug fixes
   - Fix broken bootstrap build by updating ecj-multicatch.patch
+  - PR1626: ARM32 assembler update for hsx24.
   - PR1654: ppc32 needs a larger ThreadStackSize to build
   - PR1677, G498288: Update PaX support to detect running PaX kernel and use newer tools
   - PR1679: Allow OpenJDK to build on PaX-enabled kernels

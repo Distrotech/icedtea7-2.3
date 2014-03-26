@@ -1,5 +1,15 @@
 2014-03-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* Makefile.am:
+	(ICEDTEA_PATCHES): Add ARM hs24 support patch.
+	(EXTRA_DIST): Include zero patches directory.
+	* NEWS: Mention PR1626.
+	* patches/zero/arm-7023639.patch: Backport of
+	most of PR1626, as applicable to hs23 +
+	S7023639.
+
+2014-03-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* NEWS: Set release date to today.
 	* configure.ac: Set to 2.3.14.
 
