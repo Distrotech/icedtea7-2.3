@@ -1,5 +1,9 @@
 2014-03-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* NEWS: Update with recent changes.
+
+2014-03-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	* patches/zero/7023639-8000780-jsr292_fast_path.patch,
 	* patches/zero/7192406-exact_return_type_info.patch,
 	* patches/zero/7196242-loopsandthreads_crashed.patch,
