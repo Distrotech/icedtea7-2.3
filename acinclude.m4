@@ -2508,7 +2508,7 @@ AC_DEFUN([IT_ENABLE_ARM32JIT],
 [
   AC_MSG_CHECKING([whether to enable the ARM32 JIT])
   AC_ARG_ENABLE([arm32-jit],
-                [AS_HELP_STRING(--enable-arm32-jit,build with the ARM32 JIT [[default=no]])],
+                [AS_HELP_STRING(--enable-arm32-jit,build with the ARM32 JIT [[default=yes]])],
   [
     case "${enableval}" in
       yes)
@@ -2524,4 +2524,37 @@ AC_DEFUN([IT_ENABLE_ARM32JIT],
   ])
   AC_MSG_RESULT([$enable_arm32jit])
   AM_CONDITIONAL([ENABLE_ARM32JIT], test x"${enable_arm32jit}" = "xyes")
+])
+
+AC_DEFUN([IT_ENABLE_JSR292_UPDATE],
+[
+  AC_REQUIRE([IT_SET_ARCH_SETTINGS])
+  AC_REQUIRE([IT_ENABLE_ZERO_BUILD])
+  AC_REQUIRE([IT_ENABLE_ARM32JIT])
+  AC_MSG_CHECKING([whether to enable the JSR292 update in 7023639])
+  AC_ARG_ENABLE([jsr292-update],
+                [AS_HELP_STRING(--enable-jsr292-update,build with the JSR292 update [[default=yes for zero]])],
+  [
+    case "${enableval}" in
+      yes)
+        enable_jsr292=yes
+        ;;
+      *)
+        enable_jsr292=no
+        ;;
+    esac
+  ],
+  [
+    if test "x${use_zero}" = xyes; then
+      if test "x${JRE_ARCH_DIR}" = xarm -a "x${enable_arm32jit}" = "xyes"; then
+        enable_jsr292=no;
+      else
+        enable_jsr292=yes;
+      fi
+    else
+      enable_jsr292=no;
+    fi
+  ])
+  AC_MSG_RESULT([$enable_jsr292])
+  AM_CONDITIONAL([ENABLE_JSR292], test x"${enable_jsr292}" = "xyes")
 ])

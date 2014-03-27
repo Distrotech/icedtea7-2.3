@@ -310,14 +310,14 @@ else
 ICEDTEA_PATCHES += patches/nss-not-enabled-config.patch
 endif
 
-if ZERO_BUILD
+if ENABLE_JSR292
 ICEDTEA_PATCHES += \
-	patches/zero/7023639-8000780-jsr292_fast_path.patch \
-	patches/zero/7196242-loopsandthreads_crashed.patch \
-	patches/zero/7192406-exact_return_type_info.patch \
-	patches/zero/7200949-jruby_fail.patch \
-	patches/zero/8029507-jvm_method_processing.patch \
-	patches/zero/arm-7023639.patch
+	patches/jsr292/7023639-8000780-jsr292_fast_path.patch \
+	patches/jsr292/7196242-loopsandthreads_crashed.patch \
+	patches/jsr292/7192406-exact_return_type_info.patch \
+	patches/jsr292/7200949-jruby_fail.patch \
+	patches/jsr292/8029507-jvm_method_processing.patch \
+	patches/jsr292/arm-7023639.patch
 endif
 
 ICEDTEA_PATCHES += $(DISTRIBUTION_PATCHES)
@@ -779,7 +779,7 @@ EXTRA_DIST = $(GENERATED_FILES) $(top_srcdir)/patches/*.patch \
 	$(top_srcdir)/patches/boot/*.patch \
 	$(top_srcdir)/patches/cacao/*.patch \
 	$(top_srcdir)/patches/jamvm/*.patch \
-	$(top_srcdir)/patches/zero/*.patch \
+	$(top_srcdir)/patches/jsr292/*.patch \
 	tools-copy contrib overlays \
 	javaws.png javaws.desktop \
 	jconsole.desktop policytool.desktop \

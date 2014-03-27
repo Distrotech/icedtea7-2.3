@@ -176,6 +176,7 @@ to configure:
 * --enable-Werror: Turn gcc & javac warnings into errors.
 * --disable-jar-compression: Don't compress the OpenJDK JAR files.
 * --disable-downloading: Don't download tarballs if not available; fail instead.
+* --enable-jsr292-update: Patch OpenJDK sources with a backport of S7023639 and associated patches.
 
 Other options may be supplied which enable or disable new features.
 These are documented fully in the relevant section below.

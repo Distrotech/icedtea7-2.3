@@ -1,5 +1,32 @@
 2014-03-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
 
+	* patches/zero/7023639-8000780-jsr292_fast_path.patch,
+	* patches/zero/7192406-exact_return_type_info.patch,
+	* patches/zero/7196242-loopsandthreads_crashed.patch,
+	* patches/zero/7200949-jruby_fail.patch,
+	* patches/zero/8029507-jvm_method_processing.patch,
+	* patches/zero/arm-7023639.patch: Move patches to...
+	* INSTALL: Document --enable-jsr292-update.
+	* Makefile.am:
+	(ICEDTEA_PATCHES): Fix path to JSR292 patches and
+	enable if JSR292 update option is on, rather than tying
+	the patches to Zero.
+	(EXTRA_DIST): Update path to JSR292 patches.
+	* acinclude.m4:
+	(IT_ENABLE_ARM32JIT): Fix text regarding default.
+	(IT_ENABLE_JSR292_UPDATE): Turn on or off the JSR292 patches.
+	They are on by default if building Zero without the ARM32 JIT.
+	* configure.ac: Replace invocation of IT_ENABLE_ARM32JIT with
+	IT_ENABLE_JSR292_UPDATE (which depends on the former).
+	* patches/jsr292/7023639-8000780-jsr292_fast_path.patch,
+	* patches/jsr292/7192406-exact_return_type_info.patch,
+	* patches/jsr292/7196242-loopsandthreads_crashed.patch,
+	* patches/jsr292/7200949-jruby_fail.patch,
+	* patches/jsr292/8029507-jvm_method_processing.patch,
+	* patches/jsr292/arm-7023639.patch: ... here.
+
+2014-03-26  Andrew John Hughes  <gnu.andrew@member.fsf.org>
+
 	Perform configure checks using ecj.jar
 	if native ecj is enabled.
 	* Makefile.am:
